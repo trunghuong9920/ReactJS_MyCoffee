@@ -89,5 +89,11 @@
       "password":"****",
       "avata":"https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=YhkmwErA454AX8v3DY9&_nc_ht=scontent.fhan14-2.fna&oh=00_AT-AjFcOjl4F2JWUaQiXEIuoSzQifFtNzlOJVidenswSrA&oe=62388A9E"
     }
+  ],
+  "login":[
+    {
+      "name":"admin",
+      "password": "password"
+    }
   ]
 }

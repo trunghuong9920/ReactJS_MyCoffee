@@ -10,14 +10,32 @@ function Login() {
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
 
+    const api = "http://localhost:3000/login"
+    function getDataLogin(data){
+        const options = {
+          method:"POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body:JSON.stringify(data)
+          
+        }
+        fetch(api,options)
+          .then(res => res.json())
+          .then(data =>{
+            console.log(data);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      }
+
     const handleLogin = () => {
-        
-        if(name !== '' && password !== ''){
-            navigate('/')   
+        const formData = {
+            name:name,
+            password: password
         }
-        else{
-            alert("Tên tài khoản hoặc mật khẩu không chính xác!")
-        }
+        getDataLogin(formData)
     }
 
     return (
