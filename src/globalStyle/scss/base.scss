@@ -1,0 +1,69 @@
+$color-1: #707070;
+$color-2: #c7c4c4;
+$color-3: #e08956;
+$color-4: #8d8a8a;
+$color-5: #fff;
+$color-6: #ddd8d8;
+$color-7: rgb(214, 52, 52);
+$color-8: #f0eeee;
+$color-9: rgb(240, 240, 122);
+$color-10: rgb(240, 212, 122);
+$color-11: #443d3d;
+$color-12: #e6e0e0;
+$color-13: rgb(199, 49, 12);
+$color-14: rgb(207, 123, 28);
+$color-15: #f5f5f5;
+$color-16: #6260dd;
+$color-17: #a7fc96;
+$color-18: #3a4651;
+$color-19: #85ce36;
+$header-height: 60px;
+$header-bar: 30px;
+$background-color: #e2e2e5;
+$box-main: white;
+$box-color-children: #474a59;
+$text-color-1: rgb(134, 93, 209);
+$text-color-2: #dd7373;
+$text-color-3: #fff;
+
+
+// paginate
+
+.paginate{
+    width: 100%;
+    margin: 24px 0;
+    &_list{
+        display: flex;
+        list-style: none;
+        align-items: center;
+        margin: 0 auto;
+        justify-content: center;
+        &_item{
+            margin: 0 12px;
+            width: 25px;
+            height: 25px;
+            background-color: $color-6;
+            border-radius: 4px;
+            cursor: pointer;
+            &-active{
+                background-color: $color-17;
+            }
+            &:hover{
+                background-color: $color-17;
+            }
+        }
+        &_link{
+            width: 100%;
+            span{
+                font-size: 1.4rem;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $color-11;
+            }
+        }
+    }
+}
+
