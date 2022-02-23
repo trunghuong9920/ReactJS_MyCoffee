@@ -40,6 +40,7 @@ function Admin() {
     const [tabActive, setTabActive] = useState('1')
     const [data, setData] = useState([])
     const [modalAdd, setModalAdd] = useState(false)
+
     let type = 'users'
     let component = <ListAccount/>
     let componentModalAdd = <AddAccount/>

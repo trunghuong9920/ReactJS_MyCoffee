@@ -1,9 +1,51 @@
 import { Link } from 'react-router-dom'
+import { useState } from "react"
 
 import './style.scss'
+import EditCate from './EditCate'
 
 function ListCategory({data}){
    
+    const [showEdit, setShowEdit] = useState(false)
+    const [idEdit, setIdEdit] = useState()
+
+    const handleEdit = (id) => {
+        setIdEdit(id)
+
+        setShowEdit(!showEdit)
+    }
+
+    function ModalEdit() {
+        return (
+            <>
+                <div className="modal">
+                    <div className="modal_header">
+                        <h1>Chỉnh sửa loại sản phẩm</h1>
+                    </div>
+                    <div className="modal_body">
+                        <EditCate
+                            idEdit = {idEdit}
+                        />
+                    </div>
+                    <div className="modal_footer">
+                        <div className="modal_footer_groupbtn">
+                            <button
+                                onClick={() => setShowEdit(!showEdit)}
+                            >
+                                <i className='ti-save'></i>
+                            </button>
+                            <button
+                                onClick={() => setShowEdit(!showEdit)}
+                            >
+                                <i className='ti-back-right'></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
+
     return(
         <div className='category'>
             <div className="category_title">
@@ -29,9 +71,9 @@ function ListCategory({data}){
                             </div>
                             <div className="category_body_row_col">
                                 <div className="category_body_row_col_control">
-                                    <Link to="/admin">
-                                        <button className="category_body_row_col_control-edit"><i className="ti-pencil-alt"></i></button>
-                                    </Link>
+                                    <button className="category_body_row_col_control-edit"
+                                        onClick={() => handleEdit(item.id)}
+                                    ><i className="ti-pencil-alt"></i></button>
                                     <button className="category_body_row_col_control-delete"><i className="ti-close"></i></button>
                                 </div>
                             </div>
@@ -73,6 +115,10 @@ function ListCategory({data}){
                     </li>
                 </ul>
             </div>
+            {
+                showEdit &&
+                <ModalEdit/>
+            }
         </div>
     )
 }

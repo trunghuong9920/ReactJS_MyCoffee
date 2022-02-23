@@ -1,10 +1,52 @@
 import { Link } from "react-router-dom"
+import { useState, useEffect } from "react"
 
 import "./style.scss"
 
-const listCategorys = ["Id","Ảnh đại diện", "Tên tài khoản", "Tên nhân viên","Số điện thoại", "Quyền truy cập", "Thao tác"]
-function ListAccount({data}) {
-    
+import EditAccount from './EditAccount'
+
+const listCategorys = ["Id", "Ảnh đại diện", "Tên tài khoản", "Tên nhân viên", "Số điện thoại", "Quyền truy cập", "Thao tác"]
+function ListAccount({ data }) {
+    const [showEdit, setShowEdit] = useState(false)
+    const [idEdit, setIdEdit] = useState()
+
+    const handleEdit = (id) => {
+        setIdEdit(id)
+
+        setShowEdit(!showEdit)
+    }
+
+    function ModalEdit() {
+        return (
+            <>
+                <div className="modal">
+                    <div className="modal_header">
+                        <h1>Chỉnh sửa thông tin tài khoản</h1>
+                    </div>
+                    <div className="modal_body">
+                        <EditAccount
+                            idEdit = {idEdit}
+                        />
+                    </div>
+                    <div className="modal_footer">
+                        <div className="modal_footer_groupbtn">
+                            <button
+                                onClick={() => setShowEdit(!showEdit)}
+                            >
+                                <i className='ti-save'></i>
+                            </button>
+                            <button
+                                onClick={() => setShowEdit(!showEdit)}
+                            >
+                                <i className='ti-back-right'></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
+
     return (
         <div className="ListAccount">
             <div className="ListAccout_category ListAccout_category-active">
@@ -49,9 +91,9 @@ function ListAccount({data}) {
                             <div className="ListAccout_category_col"
                             >
                                 <div className="ListAccout_category_col-control">
-                                    <Link to="/admin">
-                                        <button className="ListAccout_category_col-control-edit"><i className="ti-pencil-alt"></i></button>
-                                    </Link>
+                                    <button className="ListAccout_category_col-control-edit"
+                                        onClick={() => handleEdit(item.id)}
+                                    ><i className="ti-pencil-alt"></i></button>
                                     <button className="ListAccout_category_col-control-delete"><i className="ti-close"></i></button>
                                 </div>
                             </div>
@@ -93,6 +135,10 @@ function ListAccount({data}) {
                     </li>
                 </ul>
             </div>
+            {
+                showEdit &&
+                <ModalEdit />
+            }
         </div>
     )
 }

@@ -19,7 +19,6 @@ function AddAccount() {
 
         file.preview = URL.createObjectURL(file)    //thêm object cho file
 
-        console.log(file);
         setAvata(file)
 
         e.target.value = null
