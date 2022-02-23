@@ -1,18 +1,9 @@
 import { Link } from "react-router-dom"
-import { useState, useEffect } from "react"
 
 import "./style.scss"
 
-function ListTable() {
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const api = "http://localhost:3000/tables"
-        fetch(api)
-            .then(res => res.json())
-            .then(data => {
-                setData(data)
-            })
-    }, [])
+function ListTable({data}) {
+    
     return (
         <div className="listTable">
             <div className="listTable_title">

@@ -1,18 +1,9 @@
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
 
 import './style.scss'
 
-function ListCategory(){
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const api = "http://localhost:3000/categorys"
-        fetch(api)
-            .then(res => res.json())
-            .then(data => {
-                setData(data)
-            })
-    }, [])
+function ListCategory({data}){
+   
     return(
         <div className='category'>
             <div className="category_title">

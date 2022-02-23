@@ -1,3 +1,5 @@
+@import './mixin.scss';
+
 $color-1: #707070;
 $color-2: #c7c4c4;
 $color-3: #e08956;
@@ -25,6 +27,18 @@ $box-color-children: #474a59;
 $text-color-1: rgb(134, 93, 209);
 $text-color-2: #dd7373;
 $text-color-3: #fff;
+
+
+@keyframes slideIn {
+    from{
+        transform: translateY( calc( -100% - 65px ) );
+        opacity: 0;
+    }
+    to{
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
 
 
 // paginate
@@ -67,3 +81,82 @@ $text-color-3: #fff;
     }
 }
 
+//modal
+.modal{
+    width: 700px;
+    min-height: 50px;
+    background-color: $color-5;
+    border: 1px solid $color-2;
+    box-shadow: 0 2px 12px rgb(0, 0, 0, 20%);
+    border-radius: 12px;
+    position: fixed;
+    top: 60px;
+    left: 30%;
+    animation: slideIn linear .3s;
+
+    &_header{
+        padding: 12px;
+        border-bottom: 1px solid $color-2;
+        h1{
+            margin: 0;
+            text-align: center;
+            font-size: 1.6rem;
+            color: $color-11;
+        }
+    }
+    &_body{
+        padding: 12px;
+        .form_group{
+            &_title{
+                color: $color-11;
+            }
+            &_input{
+                width: 60%;
+                border-bottom: 1px solid $color-2;
+            }
+            img{
+                width: 60px;
+                height: 60px;
+                margin-bottom: 6px;
+            }
+            select{
+                cursor: pointer;
+            }
+            &_imgsrc{
+                display: flex;
+                &_upfile{
+                    margin-left: 12px;
+                    padding: 6px;
+                    font-size: 1.4rem;
+                    @include btnEdit();
+                    i{
+                        margin-right: 4px;
+                    }
+                }
+                &_reloadimg{
+                    margin-left: 12px;
+                    @include btnEdit();
+                    i{
+                        margin-right: 4px;
+                    }
+                }
+            }
+        }
+    }
+    &_footer{
+        width: 100%;
+        padding: 12px;
+        margin-top: 22px;
+        border-top: 1px solid $color-2;
+        &_groupbtn{
+            display: flex;
+            float: right;
+            padding-bottom: 12px;
+            button{
+                @include btnEdit();
+                margin: 0 8px;
+            }
+        }
+    }
+
+}

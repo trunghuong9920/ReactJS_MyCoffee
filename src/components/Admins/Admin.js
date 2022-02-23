@@ -8,6 +8,10 @@ import ListAccount from './listAccounts/ListAccount'
 import ListTable from './listTables/ListTable'
 import ListCategory from './listCategorys/ListCategory'
 import ListProduct from './listProducts/ListProduct'
+import AddAccount from './listAccounts/AddAccount'
+import AddTable from './listTables/AddTable'
+import AddCate from './listCategorys/AddCate'
+import AddProduct from './listProducts/AddProduct'
 
 const tabs = [
     {
@@ -34,30 +38,85 @@ const tabs = [
 
 function Admin() {
     const [tabActive, setTabActive] = useState('1')
+    const [data, setData] = useState([])
+    const [modalAdd, setModalAdd] = useState(false)
+    let type = 'users'
     let component = <ListAccount/>
+    let componentModalAdd = <AddAccount/>
     let nameTitle = "Danh mục tài khoản"
+    let nameModalAdd = "Thêm tài khoản"
 
     switch(tabActive){
         case '1':
-            component = <ListAccount/>
+            component = <ListAccount data={data}/>
             nameTitle = "Danh mục tài khoản"
+            type = "users"
+            componentModalAdd = <AddAccount/>
+            nameModalAdd = "Thêm tài khoản"
             break
         case '2':
-            component = <ListTable/>
+            component = <ListTable data={data}/>
             nameTitle = "Danh mục bàn"
+            type = "tables"
+            componentModalAdd = <AddTable/>
+            nameModalAdd = "Thêm bàn"
             break
         case '3':
-            component = <ListCategory/>
+            component = <ListCategory data={data}/>
             nameTitle = "Loại sản phẩm"
+            type = "categorys"
+            componentModalAdd = <AddCate/>
+            nameModalAdd = "Thêm Loại sản phẩm"
             break
         case '4':
-            component = <ListProduct/>
+            component = <ListProduct data={data}/>
             nameTitle = "Danh sách sản phẩm"
+            type = "products"
+            componentModalAdd = <AddProduct/>
+            nameModalAdd = "Thêm sản phẩm"
             break
         default:
-            component = <ListAccount/>
+            component = <ListAccount data={data}/>
     }
   
+    useEffect(() => {
+        const api = "http://localhost:3000/"+type
+        fetch(api)
+            .then(res => res.json())
+            .then(data => {
+                setData(data)
+            })
+    }, [type])
+
+
+    function ModalAdd(){
+        return (
+            <>
+                <div className="modal">
+                    <div className="modal_header">
+                        <h1>{nameModalAdd}</h1>
+                    </div>
+                    <div className="modal_body">
+                        {componentModalAdd}
+                    </div>
+                    <div className="modal_footer">
+                        <div className="modal_footer_groupbtn">
+                            <button
+                                onClick={() => setModalAdd(!modalAdd)}
+                            >
+                                <i className='ti-save'></i>
+                            </button>
+                            <button
+                                onClick={() => setModalAdd(!modalAdd)}
+                            >
+                                <i className='ti-back-right'></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
 
     return (
         <div className="admin ">
@@ -114,6 +173,7 @@ function Admin() {
                                 </div>
                                 <button
                                     className="colRight_header_right_add"
+                                    onClick={() => setModalAdd(!modalAdd)}
                                 >
                                     <i className="ti-plus"></i>
                                 </button>
@@ -125,6 +185,10 @@ function Admin() {
                     </div>
                 </div>
             </div>
+            {
+                modalAdd && 
+                <ModalAdd/>
+            }
         </div>
     )
 }

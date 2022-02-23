@@ -3,17 +3,17 @@
     {
       "id": 1,
       "account": "admin",
-      "name":"Ma Trung Hướng",
-      "phone":"0395749843",
-      "avata":"https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=vDDg0MYsixEAX_J6LCq&_nc_ht=scontent.fhan14-2.fna&oh=00_AT_efbT1x7JPZIncMm1seZTzP5bVI9DKe0ulSTmtNlt8Hg&oe=62388A9E",
+      "name": "Ma Trung Hướng",
+      "phone": "0395749843",
+      "avata": "https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=vDDg0MYsixEAX_J6LCq&_nc_ht=scontent.fhan14-2.fna&oh=00_AT_efbT1x7JPZIncMm1seZTzP5bVI9DKe0ulSTmtNlt8Hg&oe=62388A9E",
       "permission": "Quản lý"
     },
     {
       "id": 2,
       "account": "user",
-      "name":"Triệu Thị Hạnh",
-      "phone":"0395749813",
-      "avata":"https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=vDDg0MYsixEAX_J6LCq&_nc_ht=scontent.fhan14-2.fna&oh=00_AT_efbT1x7JPZIncMm1seZTzP5bVI9DKe0ulSTmtNlt8Hg&oe=62388A9E",
+      "name": "Triệu Thị Hạnh",
+      "phone": "0395749813",
+      "avata": "https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=vDDg0MYsixEAX_J6LCq&_nc_ht=scontent.fhan14-2.fna&oh=00_AT_efbT1x7JPZIncMm1seZTzP5bVI9DKe0ulSTmtNlt8Hg&oe=62388A9E",
       "permission": "Nhân viên"
     }
   ],
@@ -43,8 +43,8 @@
       "name": "Cà phê truyền thống"
     },
     {
-      "id": 2,
-      "name": "Cà phê máy"
+      "name": "Cà phê máy",
+      "id": 2
     }
   ],
   "products": [
@@ -80,20 +80,17 @@
       "totalPrice": ""
     }
   ],
-  "info":[
+  "info": [
     {
-      "id":1,
-      "account":"admin",
-      "name":"Ma Trung Hướng",
-      "phone":"0395749843",
-      "password":"****",
-      "avata":"https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=YhkmwErA454AX8v3DY9&_nc_ht=scontent.fhan14-2.fna&oh=00_AT-AjFcOjl4F2JWUaQiXEIuoSzQifFtNzlOJVidenswSrA&oe=62388A9E"
+      "id": 1,
+      "account": "admin",
+      "name": "Ma Trung Hướng",
+      "phone": "0395749843",
+      "password": "****",
+      "avata": "https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=YhkmwErA454AX8v3DY9&_nc_ht=scontent.fhan14-2.fna&oh=00_AT-AjFcOjl4F2JWUaQiXEIuoSzQifFtNzlOJVidenswSrA&oe=62388A9E"
     }
   ],
-  "login":[
-    {
-      "name":"admin",
-      "password": "password"
-    }
-  ]
+  "login": {
+    "account": "admin"
+  }
 }

@@ -1,19 +1,10 @@
-import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
 import "./style.scss"
 
 const listCategorys = ["Id","Ảnh đại diện", "Tên tài khoản", "Tên nhân viên","Số điện thoại", "Quyền truy cập", "Thao tác"]
-function ListAccount() {
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const api = "http://localhost:3000/users"
-        fetch(api)
-            .then(res => res.json())
-            .then(data => {
-                setData(data)
-            })
-    }, [])
+function ListAccount({data}) {
+    
     return (
         <div className="ListAccount">
             <div className="ListAccout_category ListAccout_category-active">

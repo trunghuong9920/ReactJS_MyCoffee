@@ -1,18 +1,9 @@
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import './style.scss'
 
-function ListProduct(){
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const api = "http://localhost:3000/products"
-        fetch(api)
-            .then(res => res.json())
-            .then(data => {
-                setData(data)
-            })
-    }, [])
+function ListProduct({data}){
+    
     return(
         <div className="product">
             <div className="product_title">
