@@ -184,8 +184,8 @@ function Table() {
                 {
                     positon.map((item, index) => (
                         
-                        <div  key={index}  className={clsx('table_box', {
-                            'table_active':item.status
+                        <div  key={index}  className={clsx('table_box', 'tableNoempty', {
+                            'tableempty':item.status,
                         })}>
                             <Link className="table_box-link"to={`/order?idB=${item.name}`}>{item.name}</Link>
                         </div>

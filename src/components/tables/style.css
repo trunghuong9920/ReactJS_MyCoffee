@@ -70,3 +70,11 @@
 .table_active{
     background-color: var(--color-9);
 }
+.tableNoempty{
+    background-image: url("../../images/tableIcon_2.png");
+    background-size: cover;
+}
+.tableempty{
+    background-image: url("../../images/table_icon_1.png");
+    background-size: cover;
+}
