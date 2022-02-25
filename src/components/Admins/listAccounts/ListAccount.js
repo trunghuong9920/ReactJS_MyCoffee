@@ -4,10 +4,12 @@ import { useState, useEffect } from "react"
 import "./style.scss"
 
 import EditAccount from './EditAccount'
+import DeleteAccount from "./DeleteAccount"
 
 const listCategorys = ["Id", "Ảnh đại diện", "Tên tài khoản", "Tên nhân viên", "Số điện thoại", "Quyền truy cập", "Thao tác"]
 function ListAccount({ data }) {
     const [showEdit, setShowEdit] = useState(false)
+    const [showDelete, setShowDelete] = useState(false)
     const [idEdit, setIdEdit] = useState()
 
     const handleEdit = (id) => {
@@ -15,7 +17,10 @@ function ListAccount({ data }) {
 
         setShowEdit(!showEdit)
     }
-
+    const handleDelete = (id) =>{
+        setIdEdit(id)
+        setShowDelete(!showDelete)
+    }
     function ModalEdit() {
         return (
             <>
@@ -25,7 +30,7 @@ function ListAccount({ data }) {
                     </div>
                     <div className="modal_body">
                         <EditAccount
-                            idEdit = {idEdit}
+                            idEdit={idEdit}
                         />
                     </div>
                     <div className="modal_footer">
@@ -37,6 +42,36 @@ function ListAccount({ data }) {
                             </button>
                             <button
                                 onClick={() => setShowEdit(!showEdit)}
+                            >
+                                <i className='ti-back-right'></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
+    function ModalDelete() {
+        return (
+            <>
+                <div className="modal">
+                    <div className="modal_header">
+                        <h1>Xóa thông tin tài khoản</h1>
+                    </div>
+                    <div className="modal_body">
+                        <DeleteAccount
+                            idEdit={idEdit}
+                        />
+                    </div>
+                    <div className="modal_footer">
+                        <div className="modal_footer_groupbtn">
+                            <button
+                                onClick={() => setShowDelete(!showDelete)}
+                            >
+                                <i className='ti-save'></i>
+                            </button>
+                            <button
+                                onClick={() => setShowDelete(!showDelete)}
                             >
                                 <i className='ti-back-right'></i>
                             </button>
@@ -94,7 +129,9 @@ function ListAccount({ data }) {
                                     <button className="ListAccout_category_col-control-edit"
                                         onClick={() => handleEdit(item.id)}
                                     ><i className="ti-pencil-alt"></i></button>
-                                    <button className="ListAccout_category_col-control-delete"><i className="ti-close"></i></button>
+                                    <button className="ListAccout_category_col-control-delete"
+                                        onClick={() => handleDelete(item.id)}
+                                    ><i className="ti-close"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -138,6 +175,10 @@ function ListAccount({ data }) {
             {
                 showEdit &&
                 <ModalEdit />
+            }
+            {
+                showDelete &&
+                <ModalDelete />
             }
         </div>
     )

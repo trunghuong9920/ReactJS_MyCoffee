@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
 
 import './style.scss'
+import config from "../../../_config"
 import nobody from '../../../images/nobody_m.256x256.jpg'
 
-function EditAvata({apiSrc, idStaff}) {
-
+function EditAvata({ apiSrc, idStaff }) {
+    const port = config()
     const [showEditAvata, setShowEditAvata] = useState(false)
     const [avata, setAvata] = useState('')
     const defaultAvata = nobody
@@ -26,23 +27,28 @@ function EditAvata({apiSrc, idStaff}) {
 
         file.preview = URL.createObjectURL(file)    //thêm object cho file
 
-        console.log(file);
         setAvata(file)
 
         e.target.value = null
     }
+
+
     const handleCloseEditAvata = () => {
         setShowEditAvata(!showEditAvata)
         setavatafromUrl('')
         setAvata('')
     }
 
+    const handleSaveAvata = () => {
+        setShowEditAvata(!showEditAvata)
+        
+    }
     return (
         <>
             <div className="form_body_boxAvata">
                 <div className="form_body_boxAvata_left">
                     <div className="form_body_boxAvata_left_picture">
-                        <img src={apiSrcAvata || avata.preview || avatafromUrl || defaultAvata}
+                        <img src={avata.preview || avatafromUrl || apiSrcAvata || defaultAvata}
                             alt="avata"
                             style={
                                 {
@@ -85,7 +91,7 @@ function EditAvata({apiSrc, idStaff}) {
                             onChange={handlePreviewAvataFromUrl}
                         />
                     </div>
-                    
+
                     <div className="form_body_boxAvata_edit">
                         <div className="info_group_edit">
                             <button htmlFor="info_show_edit_control"
@@ -113,7 +119,7 @@ function EditAvata({apiSrc, idStaff}) {
                                 }
                             >
                                 <button
-                                    onClick={handleCloseEditAvata}
+                                    onClick={handleSaveAvata}
                                 >Lưu</button>
                                 <button
                                     onClick={handleCloseEditAvata}
@@ -121,7 +127,7 @@ function EditAvata({apiSrc, idStaff}) {
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
 
                 <div className="form_body_boxAvata_right">

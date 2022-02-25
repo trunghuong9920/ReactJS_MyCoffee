@@ -9,7 +9,7 @@ function Info() {
     const port = config()
     const [data, setData] = useState([])
     useEffect(() => {
-        const api = port+"/info"
+        const api = port+"/users?account=admin"
         fetch(api)
             .then(res => res.json())
             .then(data => {

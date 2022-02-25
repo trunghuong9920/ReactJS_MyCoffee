@@ -3,16 +3,25 @@ import { useState } from "react"
 
 import './style.scss'
 import EditCate from './EditCate'
+import DeleteCate from './DeleteCate'
 
 function ListCategory({data}){
    
     const [showEdit, setShowEdit] = useState(false)
+    const [showDelete, setShowDelete] = useState(false)
+
     const [idEdit, setIdEdit] = useState()
 
     const handleEdit = (id) => {
         setIdEdit(id)
 
         setShowEdit(!showEdit)
+    }
+
+    const handleDelete = (id) => {
+        setIdEdit(id)
+
+        setShowDelete(!showDelete)
     }
 
     function ModalEdit() {
@@ -36,6 +45,37 @@ function ListCategory({data}){
                             </button>
                             <button
                                 onClick={() => setShowEdit(!showEdit)}
+                            >
+                                <i className='ti-back-right'></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+    function ModalDelete() {
+        return (
+            <>
+                <div className="modal">
+                    <div className="modal_header">
+                        <h1>Chỉnh sửa loại sản phẩm</h1>
+                    </div>
+                    <div className="modal_body">
+                        <DeleteCate
+                            idEdit = {idEdit}
+                        />
+                    </div>
+                    <div className="modal_footer">
+                        <div className="modal_footer_groupbtn">
+                            <button
+                                onClick={() => setShowDelete(!showDelete)}
+                            >
+                                <i className='ti-save'></i>
+                            </button>
+                            <button
+                                onClick={() => setShowDelete(!showDelete)}
                             >
                                 <i className='ti-back-right'></i>
                             </button>
@@ -74,7 +114,9 @@ function ListCategory({data}){
                                     <button className="category_body_row_col_control-edit"
                                         onClick={() => handleEdit(item.id)}
                                     ><i className="ti-pencil-alt"></i></button>
-                                    <button className="category_body_row_col_control-delete"><i className="ti-close"></i></button>
+                                    <button className="category_body_row_col_control-delete"
+                                        onClick={() => handleDelete(item.id)}
+                                    ><i className="ti-close"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -118,6 +160,10 @@ function ListCategory({data}){
             {
                 showEdit &&
                 <ModalEdit/>
+            }
+            {
+                showDelete && 
+                <ModalDelete/>
             }
         </div>
     )

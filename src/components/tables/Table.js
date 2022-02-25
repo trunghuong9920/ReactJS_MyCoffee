@@ -1,157 +1,39 @@
-import { useState} from 'react'
+import { useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
+import config from '../../_config'
 import './style.css'
 
-const tablesYard = [
-    {
-        name:'A1',
-        status: true
-    },
-    {
-        name:'A2',
-        status: false
-    },
-    {
-        name:'A3',
-        status: false
-    }
-    ,
-    {
-        name:'A2',
-        status: false
-    },
-    {
-        name:'A3',
-        status: false
-    }
-    ,
-    {
-        name:'A2',
-        status: false
-    },
-    {
-        name:'A3',
-        status: false
-    }
-    ,
-    {
-        name:'A2',
-        status: false
-    },
-    {
-        name:'A3',
-        status: false
-    }
-    ,
-    {
-        name:'A2',
-        status: false
-    },
-    {
-        name:'A3',
-        status: false
-    }
-    ,
-    {
-        name:'A2',
-        status: false
-    },
-    {
-        name:'A3',
-        status: false
-    }
-    ,
-    {
-        name:'A2',
-        status: false
-    },
-    {
-        name:'A3',
-        status: false
-    }
-    ,
-    {
-        name:'A2',
-        status: false
-    },
-    {
-        name:'A3',
-        status: false
-    }
-    ,
-    {
-        name:'A2',
-        status: false
-    },
-    {
-        name:'A3',
-        status: false
-    }
-    ,
-    {
-        name:'A2',
-        status: false
-    },
-    {
-        name:'A3',
-        status: false
-    }
-
-]
-const tablesFloor1 = [
-    {
-        name:'B1',
-        status: false
-    },
-    {
-        name:'B2',
-        status: false
-    },
-    {
-        name:'B3',
-        status: true
-    },
-    {
-        name:'B4',
-        status: false
-    },{
-        name:'B5',
-        status: true
-    }
-]
-const tablesFloor2 = [
-    {
-        name:'D1',
-        status: true
-    },
-    {
-        name:'D2',
-        status: false
-    }
-]
 const tabs = [
     {
         id: 0,
         name: 'Ngoài sân',
-        nameE: tablesYard,
     },
     {
         id: 1,
         name: 'Tầng 1',
-        nameE: tablesFloor1,
     }, {
         id: 2,
         name: 'Tầng 2',
-        nameE: tablesFloor2,
     }
 ]
 
 function Table() {
-    const [positon, setPosition] = useState(tablesYard)
+    const port = config()
+    const [positon, setPosition] = useState('Ngoài sân')
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        const api = port+"/tables?area="+positon
+        fetch(api)
+            .then(res => res.json())
+            .then(data => {
+                setData(data)
+            })
+
+    }, [positon])
    
     return (
         <div className="table-main">
@@ -160,7 +42,7 @@ function Table() {
                     <li className='tabbar_item' key={tab.id}>
                         <button
                             className={clsx('tabbar_link',
-                                positon === tab.nameE ? {
+                                positon === tab.name ? {
                                     'tabbar_link-active':true
                                     
                                 } : 
@@ -169,7 +51,7 @@ function Table() {
                                 }
                             )}
                             
-                            onClick={() => setPosition(tab.nameE)}
+                            onClick={() => setPosition(tab.name)}
                         >
                             {tab.name}
                             <i className="tabbar_link-icon"> 
@@ -182,10 +64,10 @@ function Table() {
             <div className="table-body">
                 <div className="table-body_container">
                 {
-                    positon.map((item, index) => (
+                    data.map((item, index) => (
                         
                         <div  key={index}  className={clsx('table_box', 'tableNoempty', {
-                            'tableempty':item.status,
+                            'tableempty':item.status==='Có người',
                         })}>
                             <Link className="table_box-link"to={`/order?idB=${item.name}`}>{item.name}</Link>
                         </div>

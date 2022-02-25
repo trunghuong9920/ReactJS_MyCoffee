@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import './style.scss'
 
@@ -7,7 +7,16 @@ import nobody from '../../../images/nobody_m.256x256.jpg'
 function AddAccount() {
     const [urlImg, setUrlImg] = useState('')
     const [avata, setAvata] = useState('')
+    const [permission,setPermission] = useState('Quản lý')
 
+    const handleGetValueSelect = (e) =>{
+        if(e.target.value === '1'){
+            setPermission("Nhân viên")
+        }
+        else{
+            setPermission("Quản lý")
+        }
+    }
     useEffect(() => {
         return () => {
             avata && URL.revokeObjectURL(avata.preview)
@@ -54,27 +63,41 @@ function AddAccount() {
             <div className="form_group">
                 <h3 className="form_group_title">Tên tài khoản:</h3>
                 <input className="form_group_input"
-                    placeholder='Chèn thông tin...'
+                    placeholder='Nhập tên tài khoản...'
                 />
             </div>
             <div className="form_group">
                 <h3 className="form_group_title">Tên nhân viên:</h3>
                 <input className="form_group_input"
-                    placeholder='Chèn thông tin...'
+                    placeholder='Nhập tên nhân viên...'
                 />
             </div>
             <div className="form_group">
                 <h3 className="form_group_title">Số điện thoại:</h3>
                 <input className="form_group_input"
-                    placeholder='Chèn thông tin...'
+                    placeholder='Số điện thoại là các chữ số...'
                 />
             </div>
             <div className="form_group">
                 <h3 className="form_group_title">Quyền truy cập:</h3>
-                <select>
-                    <option value="0">Quản Lý</option>
+                <select
+                    onChange = {handleGetValueSelect}
+                >
+                    <option value="0" >Quản lý</option>
                     <option value="1">Nhân viên</option>
                 </select>
+            </div>
+            <div className="form_group">
+                <h3 className="form_group_title">Mật khẩu:</h3>
+                <input className="form_group_input"
+                    placeholder='Nhập mật khẩu...'
+                />
+            </div>
+            <div className="form_group">
+                <h3 className="form_group_title">Nhập lại mật khẩu:</h3>
+                <input className="form_group_input"
+                    placeholder='Nhập lại mật khẩu...'
+                />
             </div>
         </>
     )

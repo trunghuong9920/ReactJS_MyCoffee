@@ -2,19 +2,21 @@
   "users": [
     {
       "id": 1,
+      "account": "user",
+      "name": "Triệu Thị Hạnh",
+      "phone": "0395749843",
+      "avata": "https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=vDDg0MYsixEAX_J6LCq&_nc_ht=scontent.fhan14-2.fna&oh=00_AT_efbT1x7JPZIncMm1seZTzP5bVI9DKe0ulSTmtNlt8Hg&oe=62388A9E",
+      "permission": "Nhân viên",
+      "password": "****"
+    },
+    {
+      "id": 2,
       "account": "admin",
       "name": "Ma Trung Hướng",
       "phone": "0395749843",
       "avata": "https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=vDDg0MYsixEAX_J6LCq&_nc_ht=scontent.fhan14-2.fna&oh=00_AT_efbT1x7JPZIncMm1seZTzP5bVI9DKe0ulSTmtNlt8Hg&oe=62388A9E",
-      "permission": "Quản lý"
-    },
-    {
-      "id": 2,
-      "account": "user",
-      "name": "Triệu Thị Hạnh",
-      "phone": "0395749813",
-      "avata": "https://hinhgaixinh.com/wp-content/uploads/2021/10/anh-mang-gai-xinh-cuon-hut.jpg",
-      "permission": "Nhân viên"
+      "permission": "Quản lý",
+      "password": "****"
     }
   ],
   "tables": [
@@ -34,7 +36,7 @@
       "idB": 3,
       "name": "A3",
       "status": "Trống",
-      "area": "Tầng 1"
+      "area": "Tầng 2"
     }
   ],
   "categorys": [
@@ -51,12 +53,14 @@
     {
       "id": 1,
       "nameC": "Cà phê máy",
+      "idc" : "1",
       "name": "Nâu đá",
       "price": 10000
     },
     {
       "id": 2,
       "nameC": "Cà phê máy",
+      "idc":"2",
       "name": "Đen đá",
       "price": 10000
     }
@@ -78,16 +82,6 @@
       "amount": 2,
       "timeIn": "",
       "totalPrice": ""
-    }
-  ],
-  "info": [
-    {
-      "id": 1,
-      "account": "admin",
-      "name": "Ma Trung Hướng",
-      "phone": "0395749843",
-      "password": "****",
-      "avata": "https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=YhkmwErA454AX8v3DY9&_nc_ht=scontent.fhan14-2.fna&oh=00_AT-AjFcOjl4F2JWUaQiXEIuoSzQifFtNzlOJVidenswSrA&oe=62388A9E"
     }
   ],
   "login": {

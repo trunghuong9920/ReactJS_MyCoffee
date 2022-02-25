@@ -3,15 +3,23 @@ import { useState } from "react"
 
 import "./style.scss"
 import EditTable from "./EditTable"
+import DeleteTable from "./DeleteTable"
 
 function ListTable({data}) {
     const [showEdit, setShowEdit] = useState(false)
+    const [showDelete, setShowDelete] = useState(false)
     const [idEdit, setIdEdit] = useState()
 
     const handleEdit = (id) => {
         setIdEdit(id)
 
         setShowEdit(!showEdit)
+    }
+
+    const handleDelete = (id) => {
+        setIdEdit(id)
+
+        setShowDelete(!showDelete)
     }
 
     function ModalEdit() {
@@ -35,6 +43,37 @@ function ListTable({data}) {
                             </button>
                             <button
                                 onClick={() => setShowEdit(!showEdit)}
+                            >
+                                <i className='ti-back-right'></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+    function ModalDelete() {
+        return (
+            <>
+                <div className="modal">
+                    <div className="modal_header">
+                        <h1>Xóa thông tin bàn</h1>
+                    </div>
+                    <div className="modal_body">
+                        <DeleteTable
+                            idEdit = {idEdit}
+                        />
+                    </div>
+                    <div className="modal_footer">
+                        <div className="modal_footer_groupbtn">
+                            <button
+                                onClick={() => setShowDelete(!showDelete)}
+                            >
+                                <i className='ti-save'></i>
+                            </button>
+                            <button
+                                onClick={() => setShowDelete(!showDelete)}
                             >
                                 <i className='ti-back-right'></i>
                             </button>
@@ -85,7 +124,9 @@ function ListTable({data}) {
                                     <button className="listTable_body_row_col_control-edit"
                                         onClick={() => handleEdit(item.idB)}
                                     ><i className="ti-pencil-alt"></i></button>
-                                    <button className="listTable_body_row_col_control-delete"><i className="ti-close"></i></button>
+                                    <button className="listTable_body_row_col_control-delete"
+                                        onClick={() => handleDelete(item.idB)}
+                                    ><i className="ti-close"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -130,8 +171,11 @@ function ListTable({data}) {
             {
                 showEdit &&
                 <ModalEdit
-                    idEdit = {idEdit}
                 />
+            }
+            {
+                showDelete &&
+                <ModalDelete/>
             }
         </div>
     )
