@@ -72,7 +72,7 @@ function AddAccount() {
             <div className="form_group">
                 <h3 className="form_group_title">Quyền truy cập:</h3>
                 <select>
-                    <option value="0">Quản trị viên</option>
+                    <option value="0">Quản Lý</option>
                     <option value="1">Nhân viên</option>
                 </select>
             </div>

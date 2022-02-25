@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom"
 import { useState, useRef, useEffect } from "react"
 
+import config from '../../_config'
 import "./style.scss"
-import nobody from '../../images/nobody_m.256x256.jpg'
 import EditAvata from "./editAvata/EditAvata"
 
 function Info() {
+    const port = config()
     const [data, setData] = useState([])
     useEffect(() => {
-        const api = "http://localhost:3000/info"
+        const api = port+"/info"
         fetch(api)
             .then(res => res.json())
             .then(data => {

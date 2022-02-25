@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
 
+import config from '../../../_config'
 import './style.scss'
 
 function EditProduct({ idEdit }) {
+    const port = config()
     const id = idEdit
     const [dataEdit, setDataEdit] = useState([])
     const [dataCate, setDataCate] = useState([])
 
     useEffect(() => {
-        const api = "http://localhost:3000/products?id=" + id
+        const api = port+"/products?id=" + id
         fetch(api)
             .then(res => res.json())
             .then(data => {
@@ -17,7 +19,7 @@ function EditProduct({ idEdit }) {
     }, [])
 
     useEffect(() => {
-        const api = "http://localhost:3000/categorys"
+        const api = port+"/categorys"
         fetch(api)
             .then(res => res.json())
             .then(data => {

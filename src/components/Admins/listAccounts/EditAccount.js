@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 
 import './style.scss'
-
+import config from '../../../_config'
 import nobody from '../../../images/nobody_m.256x256.jpg'
 
 function EditAccount({ idEdit }) {
+    const port = config()
     const id = idEdit
     const [urlImg, setUrlImg] = useState('')
     const [avata, setAvata] = useState('')
@@ -12,7 +13,7 @@ function EditAccount({ idEdit }) {
     const [getImgSrc, setGetImgSrc] = useState()
 
     useEffect(() => {
-        const api = "http://localhost:3000/users?id=" + id
+        const api = port+"/users?id=" + id
         fetch(api)
             .then(res => res.json())
             .then(data => {
@@ -103,7 +104,7 @@ function EditAccount({ idEdit }) {
                             <select
                                 defaultValue={item.id}
                             >
-                                <option value="0">Quản trị viên</option>
+                                <option value="0">Quản Lý</option>
                                 <option value="1">Nhân viên</option>
                             </select>
                         </div>

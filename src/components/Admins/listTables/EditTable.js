@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
 
 import './style.scss'
+import config from '../../../_config'
 
 function EditTable({ idEdit }) {
+    const port = config()
     const id = idEdit
     const [dataEdit, setDataEdit] = useState([])
 
     useEffect(() => {
-        const api = "http://localhost:3000/tables?idB=" + id
+        const api = port+"/tables?idB=" + id
         fetch(api)
             .then(res => res.json())
             .then(data => {

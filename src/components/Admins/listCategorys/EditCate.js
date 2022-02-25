@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
 
+import config from '../../../_config'
 import './style.scss'
 
 function EditCate({ idEdit }) {
+    const port = config()
     const id = idEdit
     const [dataEdit, setDataEdit] = useState([])
 
     useEffect(() => {
-        const api = "http://localhost:3000/categorys?id=" + id
+        const api = port+"/categorys?id=" + id
         fetch(api)
             .then(res => res.json())
             .then(data => {

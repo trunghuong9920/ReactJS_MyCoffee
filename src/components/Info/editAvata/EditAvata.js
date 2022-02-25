@@ -4,6 +4,7 @@ import './style.scss'
 import nobody from '../../../images/nobody_m.256x256.jpg'
 
 function EditAvata({apiSrc, idStaff}) {
+
     const [showEditAvata, setShowEditAvata] = useState(false)
     const [avata, setAvata] = useState('')
     const defaultAvata = nobody

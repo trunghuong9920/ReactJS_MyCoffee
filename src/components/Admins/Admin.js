@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 
+import config from '../../_config'
 import './style.css'
 import './style.scss'
 import ListAccount from './listAccounts/ListAccount'
@@ -37,6 +38,7 @@ const tabs = [
 ]
 
 function Admin() {
+    const port = config()
     const [tabActive, setTabActive] = useState('1')
     const [data, setData] = useState([])
     const [modalAdd, setModalAdd] = useState(false)
@@ -81,7 +83,7 @@ function Admin() {
     }
   
     useEffect(() => {
-        const api = "http://localhost:3000/"+type
+        const api = port+'/'+type
         fetch(api)
             .then(res => res.json())
             .then(data => {
