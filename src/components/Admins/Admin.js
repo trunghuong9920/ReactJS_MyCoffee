@@ -13,6 +13,8 @@ import AddAccount from './listAccounts/AddAccount'
 import AddTable from './listTables/AddTable'
 import AddCate from './listCategorys/AddCate'
 import AddProduct from './listProducts/AddProduct'
+import AccountController from './listAccounts/AccountController'
+import UseAddModal from './useAddModal'
 
 const tabs = [
     {
@@ -39,51 +41,52 @@ const tabs = [
 
 function Admin() {
     const port = config()
+    const { createAccount, courses } = AccountController()
+    const {showAddModal, handleShowAddModal} = UseAddModal()
     const [tabActive, setTabActive] = useState('1')
     const [data, setData] = useState([])
-    const [modalAdd, setModalAdd] = useState(false)
 
     let type = 'users'
-    let component = <ListAccount/>
-    let componentModalAdd = <AddAccount/>
+    let component = <ListAccount />
+    let componentModalAdd = <AddAccount />
     let nameTitle = "Danh mục tài khoản"
     let nameModalAdd = "Thêm tài khoản"
 
-    switch(tabActive){
+    switch (tabActive) {
         case '1':
-            component = <ListAccount data={data}/>
+            component = <ListAccount data={data} />
             nameTitle = "Danh mục tài khoản"
             type = "users"
-            componentModalAdd = <AddAccount/>
+            componentModalAdd = <AddAccount hide = {handleShowAddModal}/>
             nameModalAdd = "Thêm tài khoản"
             break
         case '2':
-            component = <ListTable data={data}/>
+            component = <ListTable data={data} />
             nameTitle = "Danh mục bàn"
             type = "tables"
-            componentModalAdd = <AddTable/>
+            componentModalAdd = <AddTable hide = {handleShowAddModal}/>
             nameModalAdd = "Thêm bàn"
             break
         case '3':
-            component = <ListCategory data={data}/>
+            component = <ListCategory data={data} />
             nameTitle = "Loại sản phẩm"
             type = "categorys"
-            componentModalAdd = <AddCate/>
+            componentModalAdd = <AddCate hide = {handleShowAddModal}/>
             nameModalAdd = "Thêm Loại sản phẩm"
             break
         case '4':
-            component = <ListProduct data={data}/>
+            component = <ListProduct data={data} />
             nameTitle = "Danh sách sản phẩm"
             type = "products"
-            componentModalAdd = <AddProduct/>
+            componentModalAdd = <AddProduct hide = {handleShowAddModal}/>
             nameModalAdd = "Thêm sản phẩm"
             break
         default:
-            component = <ListAccount data={data}/>
+            component = <ListAccount data={data} />
     }
-  
+
     useEffect(() => {
-        const api = port+'/'+type
+        const api = port + '/' + type
         fetch(api)
             .then(res => res.json())
             .then(data => {
@@ -91,31 +94,16 @@ function Admin() {
             })
     }, [type])
 
+    
 
-    function ModalAdd(){
+    function ModalAdd() {
         return (
             <>
                 <div className="modal">
                     <div className="modal_header">
                         <h1>{nameModalAdd}</h1>
                     </div>
-                    <div className="modal_body">
-                        {componentModalAdd}
-                    </div>
-                    <div className="modal_footer">
-                        <div className="modal_footer_groupbtn">
-                            <button
-                                onClick={() => setModalAdd(!modalAdd)}
-                            >
-                                <i className='ti-save'></i>
-                            </button>
-                            <button
-                                onClick={() => setModalAdd(!modalAdd)}
-                            >
-                                <i className='ti-back-right'></i>
-                            </button>
-                        </div>
-                    </div>
+                    {componentModalAdd}
                 </div>
             </>
         )
@@ -176,7 +164,7 @@ function Admin() {
                                 </div>
                                 <button
                                     className="colRight_header_right_add"
-                                    onClick={() => setModalAdd(!modalAdd)}
+                                    onClick={handleShowAddModal}
                                 >
                                     <i className="ti-plus"></i>
                                 </button>
@@ -189,8 +177,8 @@ function Admin() {
                 </div>
             </div>
             {
-                modalAdd && 
-                <ModalAdd/>
+                showAddModal &&
+                <ModalAdd />
             }
         </div>
     )
