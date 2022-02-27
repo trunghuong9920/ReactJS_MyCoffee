@@ -1,11 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 
 import './style.scss'
-import AccountController from './AccountController'
 import nobody from '../../../images/nobody_m.256x256.jpg'
 
 function AddAccount({hide}) {
-    const { createAccount, courses } = AccountController()
     const [urlImg, setUrlImg] = useState('')
     const [avata, setAvata] = useState('')
     const [permission, setPermission] = useState('Quản lý')
