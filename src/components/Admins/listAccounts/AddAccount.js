@@ -2,8 +2,14 @@ import { useState, useEffect, useRef } from 'react'
 
 import './style.scss'
 import nobody from '../../../images/nobody_m.256x256.jpg'
+import ApiController from '../../../services/apiController'
+import config from '../../../_config'
+import AccountController from './AccountController'
 
-function AddAccount({hide}) {
+function AddAccount({hide , handleReloadForAdd}) {
+    const {create} = ApiController()
+    const {CheckInfo} = AccountController()
+    const port = config()
     const [urlImg, setUrlImg] = useState('')
     const [avata, setAvata] = useState('')
     const [permission, setPermission] = useState('Quản lý')
@@ -11,6 +17,8 @@ function AddAccount({hide}) {
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPass, setConfirmPass] = useState('')
+    const [error, setError] = useState('')
 
     const handleGetValueSelect = (e) => {
         if (e.target.value === '1') {
@@ -18,6 +26,30 @@ function AddAccount({hide}) {
         }
         else {
             setPermission("Quản lý")
+        }
+    }
+
+
+    //add
+    
+    const handleSaveAccount = () =>{
+        if(CheckInfo(account,name,phone,password,confirmPass)){
+            const formData = {
+                account:account,
+                name:name,
+                phone:phone,
+                avata:urlImg,
+                permission:permission,
+                password:password
+            }
+            const api = port +"/users"
+            create(api,formData)
+            handleReloadForAdd(formData)
+            hide();
+            
+        }
+        else{
+            setError("Vui lòng nhập đầy đủ thông tin!")
         }
     }
     //---------------------
@@ -69,18 +101,24 @@ function AddAccount({hide}) {
                     <h3 className="form_group_title">Tên tài khoản:</h3>
                     <input className="form_group_input"
                         placeholder='Nhập tên tài khoản...'
+                        value={account}
+                        onChange = {e => setAccount(e.target.value)}
                     />
                 </div>
                 <div className="form_group">
                     <h3 className="form_group_title">Tên nhân viên:</h3>
                     <input className="form_group_input"
                         placeholder='Nhập tên nhân viên...'
+                        value={name}
+                        onChange = {e => setName(e.target.value)}
                     />
                 </div>
                 <div className="form_group">
                     <h3 className="form_group_title">Số điện thoại:</h3>
                     <input className="form_group_input"
                         placeholder='Số điện thoại là các chữ số...'
+                        value={phone}
+                        onChange = {e => setPhone(e.target.value)}
                     />
                 </div>
                 <div className="form_group">
@@ -96,18 +134,26 @@ function AddAccount({hide}) {
                     <h3 className="form_group_title">Mật khẩu:</h3>
                     <input className="form_group_input"
                         placeholder='Nhập mật khẩu...'
+                        value={password}
+                        onChange = {e => setPassword(e.target.value)}
                     />
                 </div>
                 <div className="form_group">
                     <h3 className="form_group_title">Nhập lại mật khẩu:</h3>
                     <input className="form_group_input"
                         placeholder='Nhập lại mật khẩu...'
+                        value={confirmPass}
+                        onChange = {e => setConfirmPass(e.target.value)}
                     />
                 </div>
             </div>
             <div className="modal_footer">
+                <div className='modal_footer_error'>
+                    <h3>{error}</h3>
+                </div>
                 <div className="modal_footer_groupbtn">
                     <button
+                        onClick={handleSaveAccount}
                     >
                         <i className='ti-save'></i>
                     </button>

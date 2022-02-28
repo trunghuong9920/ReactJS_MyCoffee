@@ -148,6 +148,8 @@ $text-color-3: #fff;
         padding: 12px;
         margin-top: 22px;
         border-top: 1px solid $color-2;
+        display: flex;
+        align-items: center;
         &_groupbtn{
             display: flex;
             float: right;
@@ -155,6 +157,13 @@ $text-color-3: #fff;
             button{
                 @include btnEdit();
                 margin: 0 8px;
+            }
+        }
+        &_error{
+            flex: 1;
+            h3{
+                margin: 0 4px;
+                color:  $color-14;
             }
         }
     }

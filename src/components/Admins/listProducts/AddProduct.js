@@ -12,6 +12,7 @@ function AddProduct({hide}) {
                 setCates(data)
             })
     }, [])
+
     return (
         <>
             <div className="modal_body">

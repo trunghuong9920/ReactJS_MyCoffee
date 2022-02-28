@@ -7,10 +7,13 @@ import AddAccount from "./AddAccount"
 import EditAccount from './EditAccount'
 import DeleteAccount from "./DeleteAccount"
 import UseAddModal from "../useAddModal"
+import config from "../../../_config"
 
 const listCategorys = ["Id", "Ảnh đại diện", "Tên tài khoản", "Tên nhân viên", "Số điện thoại", "Quyền truy cập", "Thao tác"]
-function ListAccount({ data }) {
-    const {showAddModal, handleShowAddModal} = UseAddModal()
+function ListAccount() {
+    const port = config()
+    const [getData, setGetData] = useState([])
+    const { showAddModal, handleShowAddModal } = UseAddModal()
     const [showEdit, setShowEdit] = useState(false)
     const [showDelete, setShowDelete] = useState(false)
     const [idEdit, setIdEdit] = useState()
@@ -24,7 +27,51 @@ function ListAccount({ data }) {
         setIdEdit(id)
         setShowDelete(!showDelete)
     }
+    const lastItem = getData[getData.length - 1]
+    const handleReloadForAdd = (formData) => {
+        const data = [...getData]
+        const newData = {
+            id: lastItem.id + 1,
+            account: formData.account,
+            name: formData.name,
+            phone: formData.phone,
+            avata : formData.avata,
+            permission : formData.permission,
+            password: formData.password
+        }
+        data.push(newData)
+        setGetData(data)
+    }
+    
+    const handleReloadForEdit = (newid, formData) => {
+        const data = [...getData];
+        const newData = data.map(
+            item => {
+                if (item.id === newid) {
+                    item.account = formData.account
+                    item.name = formData.name
+                    item.phone = formData.phone
+                    item.avata = formData.avata
+                    item.permission = formData.permission
+                }
+            return item
+            }
+        )
+       setGetData(newData)
+    }
+    const handleReloadForDelete = (newId) => {
+        setGetData(getData.filter(item => item.id !== newId))
+    }
 
+    //Load data
+    useEffect(() => {
+        const api = port + '/users'
+        fetch(api)
+            .then(res => res.json())
+            .then(data => {
+                setGetData(data)
+            })
+    }, [])
 
     function ModalAdd() {
         return (
@@ -33,7 +80,7 @@ function ListAccount({ data }) {
                     <div className="modal_header">
                         <h1>Thêm tài khoản</h1>
                     </div>
-                    <AddAccount hide={handleShowAddModal}/>
+                    <AddAccount hide={handleShowAddModal} handleReloadForAdd={handleReloadForAdd} />
                 </div>
             </>
         )
@@ -46,25 +93,12 @@ function ListAccount({ data }) {
                     <div className="modal_header">
                         <h1>Chỉnh sửa thông tin tài khoản</h1>
                     </div>
-                    <div className="modal_body">
-                        <EditAccount
-                            idEdit={idEdit}
-                        />
-                    </div>
-                    <div className="modal_footer">
-                        <div className="modal_footer_groupbtn">
-                            <button
-                                onClick={() => setShowEdit(!showEdit)}
-                            >
-                                <i className='ti-save'></i>
-                            </button>
-                            <button
-                                onClick={() => setShowEdit(!showEdit)}
-                            >
-                                <i className='ti-back-right'></i>
-                            </button>
-                        </div>
-                    </div>
+                    <EditAccount
+                        idEdit={idEdit}
+                        handleEdit={handleEdit}
+                        handleReloadForEdit={handleReloadForEdit}
+                    />
+
                 </div>
             </>
         )
@@ -76,25 +110,11 @@ function ListAccount({ data }) {
                     <div className="modal_header">
                         <h1>Xóa thông tin tài khoản</h1>
                     </div>
-                    <div className="modal_body">
-                        <DeleteAccount
-                            idEdit={idEdit}
-                        />
-                    </div>
-                    <div className="modal_footer">
-                        <div className="modal_footer_groupbtn">
-                            <button
-                                onClick={() => setShowDelete(!showDelete)}
-                            >
-                                <i className='ti-save'></i>
-                            </button>
-                            <button
-                                onClick={() => setShowDelete(!showDelete)}
-                            >
-                                <i className='ti-back-right'></i>
-                            </button>
-                        </div>
-                    </div>
+                    <DeleteAccount
+                        idEdit={idEdit}
+                        handleDelete={handleDelete}
+                        handleReloadForDelete={handleReloadForDelete}
+                    />
                 </div>
             </>
         )
@@ -136,7 +156,7 @@ function ListAccount({ data }) {
                     </div>
                     <div className="ListAccout_category_body">
                         {
-                            data.map((item, index) => (
+                            getData.map((item, index) => (
                                 <div key={index} className="ListAccout_category">
                                     <div className="ListAccout_category_col"
                                     >
@@ -213,7 +233,7 @@ function ListAccount({ data }) {
                     </div>
                     {
                         showAddModal &&
-                        <ModalAdd/>
+                        <ModalAdd />
                     }
                     {
                         showEdit &&

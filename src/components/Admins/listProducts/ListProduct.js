@@ -14,6 +14,7 @@ function ListProduct({ data }) {
     const [showDelete, setShowDelete] = useState(false)
     const [idEdit, setIdEdit] = useState()
 
+
     const handleEdit = (id) => {
         setIdEdit(id)
 
@@ -33,7 +34,7 @@ function ListProduct({ data }) {
                     <div className="modal_header">
                         <h1>Thêm sản phẩm:</h1>
                     </div>
-                    <AddProduct hide={handleShowAddModal} />
+                    <AddProduct hide={handleShowAddModal}/>
                 </div>
             </>
         )

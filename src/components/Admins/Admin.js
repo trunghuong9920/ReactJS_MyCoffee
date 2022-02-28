@@ -39,11 +39,11 @@ function Admin() {
     const [data, setData] = useState([])
 
     let type = 'users'
-    let component = <ListAccount />
+    let component = <ListAccount/>
 
     switch (tabActive) {
         case '1':
-            component = <ListAccount data={data} />
+            component = <ListAccount />
             type = "users"
             break
         case '2':
