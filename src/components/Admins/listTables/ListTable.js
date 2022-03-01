@@ -1,19 +1,55 @@
 import { Link } from "react-router-dom"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import "./style.scss"
 import AddTable from './AddTable'
 import EditTable from "./EditTable"
 import DeleteTable from "./DeleteTable"
-import UseAddModal from "../useAddModal"
+import config from "../../../_config"
 
-function ListTable({ data }) {
-    const { showAddModal, handleShowAddModal } = UseAddModal()
-
+function ListTable() {
+    const port = config();
     const [showEdit, setShowEdit] = useState(false)
     const [showDelete, setShowDelete] = useState(false)
+    const [showAdd, setShowAdd] = useState(false)
     const [idEdit, setIdEdit] = useState()
+    const [getData, setGetData] = useState([])
 
+
+    const lastItem = getData[getData.length - 1]
+    const handleReloadForAdd = (formData) => {
+        const data = [...getData]
+        const newData = {
+            id: lastItem.id + 1,
+            name: formData.name,
+            status: formData.status,
+            area: formData.area
+        }
+        data.push(newData)
+        setGetData(data)
+    }
+
+    const handleReloadForEdit = (newid, formData) => {
+        const data = [...getData];
+        const newData = data.map(
+            item => {
+                if (item.id === newid) {
+                    item.name = formData.name
+                    item.area = formData.area
+                }
+            return item
+            }
+        )
+       setGetData(newData)
+    }
+
+    const handleReloadForDelete = (newId) => {
+        setGetData(getData.filter(item => item.id !== newId))
+    }
+
+    const handleAdd = () => {
+        setShowAdd(!showAdd)
+    }
     const handleEdit = (id) => {
         setIdEdit(id)
 
@@ -26,6 +62,17 @@ function ListTable({ data }) {
         setShowDelete(!showDelete)
     }
 
+      //Load data
+      useEffect(() => {
+        const api = port + '/tables'
+        fetch(api)
+            .then(res => res.json())
+            .then(data => {
+                setGetData(data)
+            })
+    }, [])
+
+
     function ModalAdd() {
         return (
             <>
@@ -33,7 +80,7 @@ function ListTable({ data }) {
                     <div className="modal_header">
                         <h1>Thêm bàn:</h1>
                     </div>
-                    <AddTable hide={handleShowAddModal} />
+                    <AddTable hide={handleAdd} handleReloadForAdd = {handleReloadForAdd}/>
                 </div>
             </>
         )
@@ -46,25 +93,12 @@ function ListTable({ data }) {
                     <div className="modal_header">
                         <h1>Chỉnh sửa thông tin bàn</h1>
                     </div>
-                    <div className="modal_body">
-                        <EditTable
+                    <EditTable
                             idEdit={idEdit}
+                            hide = {handleEdit}
+                            handleReloadForEdit = {handleReloadForEdit}
                         />
-                    </div>
-                    <div className="modal_footer">
-                        <div className="modal_footer_groupbtn">
-                            <button
-                                onClick={() => setShowEdit(!showEdit)}
-                            >
-                                <i className='ti-save'></i>
-                            </button>
-                            <button
-                                onClick={() => setShowEdit(!showEdit)}
-                            >
-                                <i className='ti-back-right'></i>
-                            </button>
-                        </div>
-                    </div>
+                    
                 </div>
             </>
         )
@@ -77,25 +111,11 @@ function ListTable({ data }) {
                     <div className="modal_header">
                         <h1>Xóa thông tin bàn</h1>
                     </div>
-                    <div className="modal_body">
-                        <DeleteTable
-                            idEdit={idEdit}
+                    <DeleteTable
+                            id={idEdit}
+                            hide = {handleDelete}
+                            handleReloadForDelete={handleReloadForDelete}
                         />
-                    </div>
-                    <div className="modal_footer">
-                        <div className="modal_footer_groupbtn">
-                            <button
-                                onClick={() => setShowDelete(!showDelete)}
-                            >
-                                <i className='ti-save'></i>
-                            </button>
-                            <button
-                                onClick={() => setShowDelete(!showDelete)}
-                            >
-                                <i className='ti-back-right'></i>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </>
         )
@@ -116,7 +136,7 @@ function ListTable({ data }) {
                     </div>
                     <button
                         className="colRight_header_right_add"
-                        onClick={handleShowAddModal}
+                        onClick={handleAdd}
                     >
                         <i className="ti-plus"></i>
                     </button>
@@ -143,10 +163,10 @@ function ListTable({ data }) {
                     </div>
                     <div className="listTable_body">
                         {
-                            data.map((item, index) => (
+                            getData.map((item, index) => (
                                 <div key={index} className="listTable_body_row">
                                     <div className="listTable_body_row_col">
-                                        <h3 className="listTable_body_row_col_value">{item.idB}</h3>
+                                        <h3 className="listTable_body_row_col_value">{item.id}</h3>
                                     </div>
                                     <div className="listTable_body_row_col">
                                         <h3 className="listTable_body_row_col_value">{item.name}</h3>
@@ -160,10 +180,10 @@ function ListTable({ data }) {
                                     <div className="listTable_body_row_col">
                                         <div className="listTable_body_row_col_control">
                                             <button className="listTable_body_row_col_control-edit"
-                                                onClick={() => handleEdit(item.idB)}
+                                                onClick={() => handleEdit(item.id)}
                                             ><i className="ti-pencil-alt"></i></button>
                                             <button className="listTable_body_row_col_control-delete"
-                                                onClick={() => handleDelete(item.idB)}
+                                                onClick={() => handleDelete(item.id)}
                                             ><i className="ti-close"></i></button>
                                         </div>
                                     </div>
@@ -206,7 +226,7 @@ function ListTable({ data }) {
                         </ul>
                     </div>
                     {
-                        showAddModal &&
+                        showAdd &&
                         <ModalAdd />
                     }
                     {

@@ -15,7 +15,7 @@ function EditAccount({ idEdit , handleEdit, handleReloadForEdit }) {
     const [avata, setAvata] = useState('')
     const [dataEdit, setDataEdit] = useState([])
     const [getImgSrc, setGetImgSrc] = useState()
-    const [permission, setPermission] = useState('Quản lý')
+    const [permission, setPermission] = useState('Quản Lý')
     const [account, setAccount] = useState('')
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
@@ -59,9 +59,19 @@ function EditAccount({ idEdit , handleEdit, handleReloadForEdit }) {
             .then(res => res.json())
             .then(data => {
                 setDataEdit(data)
-                setGetImgSrc(data.map(item => {
-                    return item.avata, setAccount(item.account), setName(item.name), setPhone(item.phone), setPassword(item.password)
-                }));
+                data.map(item => {
+                    setGetImgSrc(item.avata)
+                    setAccount(item.account)
+                    setName(item.name)
+                    setPhone(item.phone)
+                    setPassword(item.password)
+                    if(item.permission === 'Quản lý'){
+                        setPermission("0")
+                    }
+                    if(item.permission === 'Nhân viên'){
+                        setPermission("1")
+                    }
+                });
             })
     }, [])
 
@@ -99,7 +109,7 @@ function EditAccount({ idEdit , handleEdit, handleReloadForEdit }) {
                                     <input
                                         className="form_group_input"
                                         placeholder='Chèn đường dẫn ảnh...'
-                                        value={urlImg}
+                                        defaultValue={getImgSrc}
                                         onChange={e => setUrlImg(e.target.value)}
                                     />
                                     <input type="file"
@@ -148,7 +158,7 @@ function EditAccount({ idEdit , handleEdit, handleReloadForEdit }) {
                                 <h3 className="form_group_title">Quyền truy cập:</h3>
                                 <select
                                     onChange={handleGetValueSelect}
-                                    defaultValue={item.id}
+                                    value = {permission}
                                 >
                                     <option value="0">Quản Lý</option>
                                     <option value="1">Nhân viên</option>

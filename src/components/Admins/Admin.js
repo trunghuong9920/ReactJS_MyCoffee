@@ -47,7 +47,7 @@ function Admin() {
             type = "users"
             break
         case '2':
-            component = <ListTable data={data} />
+            component = <ListTable />
             type = "tables"
             break
         case '3':

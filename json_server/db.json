@@ -13,8 +13,8 @@
       "account": "HanhHanh",
       "name": "Triệu Thị Hạnh",
       "phone": "8437028",
-      "avata": "https://scontent.fhan2-3.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=UZgYC8aBxOAAX8H_1zB&_nc_ht=scontent.fhan2-3.fna&oh=00_AT8-bGW0BWWPkihITz7uPXpvbTtAFyYcxnLeM4pjWVfHUA&oe=6240739E",
-      "permission": "Quản lý",
+      "avata": "",
+      "permission": "Nhân viên",
       "password": "1",
       "id": 3
     },
@@ -30,22 +30,28 @@
   ],
   "tables": [
     {
-      "idB": 1,
       "name": "A1",
       "status": "Trống",
-      "area": "Ngoài sân"
+      "area": "Ngoài sân",
+      "id": 1
     },
     {
-      "idB": 2,
       "name": "A2",
-      "status": "Có người",
-      "area": "Tầng 1"
+      "status": "Trống",
+      "area": "Ngoài sân",
+      "id": 2
     },
     {
-      "idB": 3,
       "name": "A3",
       "status": "Trống",
-      "area": "Tầng 2"
+      "area": "Ngoài sân",
+      "id": 3
+    },
+    {
+      "name": "B1",
+      "status": "Trống",
+      "area": "Tầng 1",
+      "id": 4
     }
   ],
   "categorys": [
