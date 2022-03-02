@@ -11,7 +11,6 @@ function EditAccount({ idEdit , handleEdit, handleReloadForEdit }) {
     const {create, editData} = ApiController()
     const {CheckInfo,CheckInfoEdit} = AccountController()
     const id = idEdit
-    const [urlImg, setUrlImg] = useState('')
     const [avata, setAvata] = useState('')
     const [dataEdit, setDataEdit] = useState([])
     const [getImgSrc, setGetImgSrc] = useState()
@@ -21,13 +20,16 @@ function EditAccount({ idEdit , handleEdit, handleReloadForEdit }) {
     const [phone, setPhone] = useState('')
     const [error, setError] = useState('')
     const [password, setPassword] = useState('')
+    const [convertPermission, setConvertPermis]= useState()
 
     const handleGetValueSelect = (e) => {
         if (e.target.value === '1') {
             setPermission("Nhân viên")
+            setConvertPermis('1')
         }
         else {
             setPermission("Quản lý")
+            setConvertPermis('0')
         }
     }
 
@@ -38,7 +40,7 @@ function EditAccount({ idEdit , handleEdit, handleReloadForEdit }) {
                 account:account,
                 name:name,
                 phone:phone,
-                avata:urlImg,
+                avata:getImgSrc,
                 permission:permission,
                 password:password
             }
@@ -65,11 +67,12 @@ function EditAccount({ idEdit , handleEdit, handleReloadForEdit }) {
                     setName(item.name)
                     setPhone(item.phone)
                     setPassword(item.password)
-                    if(item.permission === 'Quản lý'){
-                        setPermission("0")
+                    setPermission(item.permission)
+                    if(item.permission === "Quản lý"){
+                        setConvertPermis('0')
                     }
-                    if(item.permission === 'Nhân viên'){
-                        setPermission("1")
+                    if(item.permission === "Nhân viên"){
+                        setConvertPermis('1')
                     }
                 });
             })
@@ -92,7 +95,6 @@ function EditAccount({ idEdit , handleEdit, handleReloadForEdit }) {
     }
 
     const handleReloadImg = () => {
-        setUrlImg('')
         setAvata('')
         setGetImgSrc('')
     }
@@ -104,13 +106,13 @@ function EditAccount({ idEdit , handleEdit, handleReloadForEdit }) {
                         <div key={index}>
                             <div className="form_group">
                                 <h3 className="form_group_title">Ảnh:</h3>
-                                <img src={getImgSrc || avata.preview || urlImg || nobody} />
+                                <img src={getImgSrc || avata.preview || nobody} />
                                 <div className='form_group_imgsrc'>
                                     <input
                                         className="form_group_input"
                                         placeholder='Chèn đường dẫn ảnh...'
                                         defaultValue={getImgSrc}
-                                        onChange={e => setUrlImg(e.target.value)}
+                                        onChange={e => setGetImgSrc(e.target.value)}
                                     />
                                     <input type="file"
                                         id='form_group_imgsrc_upfile'
@@ -157,10 +159,10 @@ function EditAccount({ idEdit , handleEdit, handleReloadForEdit }) {
                             <div className="form_group">
                                 <h3 className="form_group_title">Quyền truy cập:</h3>
                                 <select
+                                    value= {convertPermission}
                                     onChange={handleGetValueSelect}
-                                    value = {permission}
                                 >
-                                    <option value="0">Quản Lý</option>
+                                    <option value="0">Quản lý</option>
                                     <option value="1">Nhân viên</option>
                                 </select>
                             </div>

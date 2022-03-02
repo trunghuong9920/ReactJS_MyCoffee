@@ -15,15 +15,19 @@ function EditTable({ idEdit, hide, handleReloadForEdit }) {
     const [area, setArea] = useState('Ngoài sân')
     const [status, setStatus] = useState()
     const [error, setError] = useState('')
+    const [convertArea, setConvertArea] = useState()
     const handleGetArea = (e) =>{
         if(e.target.value === '0'){
             setArea("Ngoài sân")
+            setConvertArea('0')
         }
         if(e.target.value === '1'){
             setArea("Tầng 1")
+            setConvertArea('1')
         }
         if(e.target.value === '2'){
             setArea("Tầng 2")
+            setConvertArea('2')
         }
     }
 
@@ -54,6 +58,15 @@ function EditTable({ idEdit, hide, handleReloadForEdit }) {
                     setArea(item.area)
                     setName(item.name)
                     setStatus(item.status)
+                    if(item.area === "Ngoài sân"){
+                        setConvertArea('0')
+                    }
+                    if(item.area === "Tầng 1"){
+                        setConvertArea('1')
+                    }
+                    if(item.area === "Tầng 2"){
+                        setConvertArea('2')
+                    }
                 })
             })
     }, [])
@@ -85,7 +98,7 @@ function EditTable({ idEdit, hide, handleReloadForEdit }) {
                                 <h3 className="form_group_title">Khu vực:</h3>
                                 <select
                                     onChange={handleGetArea}
-                                    value = {area}
+                                    value = {convertArea}
                                 >
                                     <option value="0">Ngoài sân</option>
                                     <option value="1">Tầng 1</option>

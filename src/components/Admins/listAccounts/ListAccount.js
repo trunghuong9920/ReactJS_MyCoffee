@@ -6,18 +6,20 @@ import "./style.scss"
 import AddAccount from "./AddAccount"
 import EditAccount from './EditAccount'
 import DeleteAccount from "./DeleteAccount"
-import UseAddModal from "../useAddModal"
 import config from "../../../_config"
 
 const listCategorys = ["Id", "Ảnh đại diện", "Tên tài khoản", "Tên nhân viên", "Số điện thoại", "Quyền truy cập", "Thao tác"]
 function ListAccount() {
     const port = config()
     const [getData, setGetData] = useState([])
-    const { showAddModal, handleShowAddModal } = UseAddModal()
+    const [showAdd, setShowAdd] = useState(false)
     const [showEdit, setShowEdit] = useState(false)
     const [showDelete, setShowDelete] = useState(false)
     const [idEdit, setIdEdit] = useState()
 
+    const handleAdd = () =>{
+        setShowAdd(!showAdd)
+    }
     const handleEdit = (id) => {
         setIdEdit(id)
 
@@ -80,7 +82,7 @@ function ListAccount() {
                     <div className="modal_header">
                         <h1>Thêm tài khoản</h1>
                     </div>
-                    <AddAccount hide={handleShowAddModal} handleReloadForAdd={handleReloadForAdd} />
+                    <AddAccount hide={handleAdd} handleReloadForAdd={handleReloadForAdd} />
                 </div>
             </>
         )
@@ -135,7 +137,7 @@ function ListAccount() {
                     </div>
                     <button
                         className="colRight_header_right_add"
-                        onClick={handleShowAddModal}
+                        onClick={handleAdd}
                     >
                         <i className="ti-plus"></i>
                     </button>
@@ -232,7 +234,7 @@ function ListAccount() {
                         </ul>
                     </div>
                     {
-                        showAddModal &&
+                        showAdd &&
                         <ModalAdd />
                     }
                     {

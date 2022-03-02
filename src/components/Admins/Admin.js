@@ -51,26 +51,16 @@ function Admin() {
             type = "tables"
             break
         case '3':
-            component = <ListCategory data={data} />
+            component = <ListCategory/>
             type = "categorys"
             break
         case '4':
-            component = <ListProduct data={data} />
+            component = <ListProduct/>
             type = "products"
             break
         default:
-            component = <ListAccount data={data} />
+            component = <ListAccount/>
     }
-
-    useEffect(() => {
-        const api = port + '/' + type
-        fetch(api)
-            .then(res => res.json())
-            .then(data => {
-                setData(data)
-            })
-    }, [type])
-
     return (
         <div className="admin ">
             <div className="admin-title">

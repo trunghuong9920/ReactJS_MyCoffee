@@ -4,8 +4,8 @@
       "account": "Admin",
       "name": "Ma Trung Hướng",
       "phone": "0395749843",
-      "avata": "",
-      "permission": "Quản lý",
+      "avata": "https://scontent.fhan2-3.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=q8PiVp_SX1sAX9jiiU8&_nc_ht=scontent.fhan2-3.fna&oh=00_AT-Clf7O8SvmUBUmUoyEub8468COQUBDj2syiTsL79AeGg&oe=6244681E",
+      "permission": "Nhân viên",
       "password": "****",
       "id": 1
     },
@@ -14,7 +14,7 @@
       "name": "Triệu Thị Hạnh",
       "phone": "8437028",
       "avata": "",
-      "permission": "Nhân viên",
+      "permission": "Quản lý",
       "password": "1",
       "id": 3
     },
@@ -22,8 +22,8 @@
       "account": "trunghuong",
       "name": "Ma Trung Hướng",
       "phone": "43874",
-      "avata": "https://scontent.fhan2-3.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=UZgYC8aBxOAAX8H_1zB&_nc_ht=scontent.fhan2-3.fna&oh=00_AT8-bGW0BWWPkihITz7uPXpvbTtAFyYcxnLeM4pjWVfHUA&oe=6240739E",
-      "permission": "Quản lý",
+      "avata": "https://scontent.fhan2-3.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=q8PiVp_SX1sAX9jiiU8&_nc_ht=scontent.fhan2-3.fna&oh=00_AT-Clf7O8SvmUBUmUoyEub8468COQUBDj2syiTsL79AeGg&oe=6244681E",
+      "permission": "Nhân viên",
       "password": "1",
       "id": 8
     }
@@ -32,7 +32,7 @@
     {
       "name": "A1",
       "status": "Trống",
-      "area": "Ngoài sân",
+      "area": "Tầng 1",
       "id": 1
     },
     {
@@ -50,7 +50,7 @@
     {
       "name": "B1",
       "status": "Trống",
-      "area": "Tầng 1",
+      "area": "Tầng 2",
       "id": 4
     }
   ],
@@ -62,22 +62,44 @@
     {
       "name": "Cà phê máy",
       "id": 2
+    },
+    {
+      "name": "Sinh tố",
+      "id": 3
+    },
+    {
+      "name": "Trà",
+      "id": 4
     }
   ],
   "products": [
     {
       "id": 1,
       "nameC": "Cà phê máy",
-      "idc": "1",
+      "idc": 2,
       "name": "Nâu đá",
       "price": 10000
     },
     {
       "id": 2,
       "nameC": "Cà phê máy",
-      "idc": "2",
+      "idc": 2,
       "name": "Đen đá",
       "price": 10000
+    },
+    {
+      "nameC": "Sinh tố",
+      "idc": "3",
+      "name": "Xoài",
+      "price": "30000",
+      "id": 5
+    },
+    {
+      "nameC": "Trà",
+      "idc": "4",
+      "name": "Trà Đào",
+      "price": "3123",
+      "id": 6
     }
   ],
   "details": [

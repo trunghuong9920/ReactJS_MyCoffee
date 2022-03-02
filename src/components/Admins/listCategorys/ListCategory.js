@@ -1,19 +1,24 @@
 import { Link } from 'react-router-dom'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import './style.scss'
 import AddCate from './AddCate'
 import EditCate from './EditCate'
 import DeleteCate from './DeleteCate'
-import UseAddModal from '../useAddModal'
+import config from '../../../_config'
 
-function ListCategory({ data }) {
-    const { showAddModal, handleShowAddModal } = UseAddModal()
-
+function ListCategory() {
+    const port = config()
+    const [getData, setGetData] = useState([])
     const [showEdit, setShowEdit] = useState(false)
+    const [showAdd, setShowAdd] = useState(false)
     const [showDelete, setShowDelete] = useState(false)
 
     const [idEdit, setIdEdit] = useState()
+
+    const handleAdd = () => {
+        setShowAdd(!showAdd)
+    }
 
     const handleEdit = (id) => {
         setIdEdit(id)
@@ -27,6 +32,33 @@ function ListCategory({ data }) {
         setShowDelete(!showDelete)
     }
 
+    const lastItem = getData[getData.length - 1]
+    const handleReloadForAdd = (formData) => {
+        const data = [...getData]
+        const newData = {
+            id: lastItem.id + 1,
+            name: formData.name,
+        }
+        data.push(newData)
+        setGetData(data)
+    }
+    const handleReloadForEdit = (newid, formData) => {
+        const data = [...getData];
+        const newData = data.map(
+            item => {
+                if (item.id === newid) {
+                    item.name = formData.name
+                }
+                return item
+            }
+        )
+        setGetData(newData)
+    }
+    const handleReloadForDelete = (newId) => {
+        setGetData(getData.filter(item => item.id !== newId))
+    }
+
+
     function ModalAdd() {
         return (
             <>
@@ -34,39 +66,32 @@ function ListCategory({ data }) {
                     <div className="modal_header">
                         <h1>Thêm loại sản phẩm:</h1>
                     </div>
-                    <AddCate hide={handleShowAddModal} />
+                    <AddCate hide={handleAdd}
+                        handleReloadForAdd={handleReloadForAdd}
+                    />
                 </div>
             </>
         )
     }
 
+    //Load data
+    useEffect(() => {
+        const api = port + '/categorys'
+        fetch(api)
+            .then(res => res.json())
+            .then(data => {
+                setGetData(data)
+            })
+    }, [])
+
     function ModalEdit() {
         return (
             <>
-                <div className="modal">
-                    <div className="modal_header">
-                        <h1>Chỉnh sửa loại sản phẩm</h1>
-                    </div>
-                    <div className="modal_body">
-                        <EditCate
-                            idEdit={idEdit}
-                        />
-                    </div>
-                    <div className="modal_footer">
-                        <div className="modal_footer_groupbtn">
-                            <button
-                                onClick={() => setShowEdit(!showEdit)}
-                            >
-                                <i className='ti-save'></i>
-                            </button>
-                            <button
-                                onClick={() => setShowEdit(!showEdit)}
-                            >
-                                <i className='ti-back-right'></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <EditCate
+                    idEdit={idEdit}
+                    hide={handleEdit}
+                    handleReloadForEdit={handleReloadForEdit}
+                />
             </>
         )
     }
@@ -74,30 +99,11 @@ function ListCategory({ data }) {
     function ModalDelete() {
         return (
             <>
-                <div className="modal">
-                    <div className="modal_header">
-                        <h1>Chỉnh sửa loại sản phẩm</h1>
-                    </div>
-                    <div className="modal_body">
-                        <DeleteCate
-                            idEdit={idEdit}
-                        />
-                    </div>
-                    <div className="modal_footer">
-                        <div className="modal_footer_groupbtn">
-                            <button
-                                onClick={() => setShowDelete(!showDelete)}
-                            >
-                                <i className='ti-save'></i>
-                            </button>
-                            <button
-                                onClick={() => setShowDelete(!showDelete)}
-                            >
-                                <i className='ti-back-right'></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <DeleteCate
+                    id={idEdit}
+                    hide = {handleDelete}
+                    handleReloadForDelete = {handleReloadForDelete}
+                />
             </>
         )
     }
@@ -117,7 +123,7 @@ function ListCategory({ data }) {
                     </div>
                     <button
                         className="colRight_header_right_add"
-                        onClick={handleShowAddModal}
+                        onClick={handleAdd}
                     >
                         <i className="ti-plus"></i>
                     </button>
@@ -138,7 +144,7 @@ function ListCategory({ data }) {
                     </div>
                     <div className="category_body">
                         {
-                            data.map((item, index) => (
+                            getData.map((item, index) => (
                                 <div key={index} className="category_body_row">
                                     <div className="category_body_row_col">
                                         <h3 className="category_body_row_col_value">{item.id}</h3>
@@ -195,7 +201,7 @@ function ListCategory({ data }) {
                         </ul>
                     </div>
                     {
-                        showAddModal &&
+                        showAdd &&
                         <ModalAdd />
                     }
                     {

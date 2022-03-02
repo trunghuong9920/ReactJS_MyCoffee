@@ -1,20 +1,24 @@
 import { Link } from 'react-router-dom'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import './style.scss'
 import AddProduct from './AddProduct'
 import EditProduct from './EditProduct'
 import DeleteProduct from './DeleteProduct'
-import UseAddModal from '../useAddModal'
+import config from '../../../_config'
 
-function ListProduct({ data }) {
-    const { showAddModal, handleShowAddModal } = UseAddModal()
-
+function ListProduct() {
+    const port = config()
+    const [getData, setGetData] = useState([])
+    const [showAdd, setShowAdd] = useState(false)
     const [showEdit, setShowEdit] = useState(false)
     const [showDelete, setShowDelete] = useState(false)
     const [idEdit, setIdEdit] = useState()
 
 
+    const handleAdd = () => {
+        setShowAdd(!showAdd)
+    }
     const handleEdit = (id) => {
         setIdEdit(id)
 
@@ -26,6 +30,47 @@ function ListProduct({ data }) {
 
         setShowDelete(!showDelete)
     }
+    const lastItem = getData[getData.length - 1]
+    const handleReloadForAdd = (formData) => {
+        const data = [...getData]
+        const newData = {
+            id: lastItem.id + 1,
+            name: formData.name,
+            nameC: formData.nameC,
+            idc: formData.idc,
+            price: formData.price
+        }
+        data.push(newData)
+        setGetData(data)
+    }
+
+    const handleReloadForEdit = (newid, formData) => {
+        const data = [...getData];
+        const newData = data.map(
+            item => {
+                if (item.id === newid) {
+                    item.name = formData.name
+                    item.nameC = formData.nameC
+                    item.idc = formData.idc
+                    item.price = formData.price
+                }
+                return item
+            }
+        )
+        setGetData(newData)
+    }
+    const handleReloadForDelete = (newId) => {
+        setGetData(getData.filter(item => item.id !== newId))
+    }
+    //Load data
+    useEffect(() => {
+        const api = port + '/products'
+        fetch(api)
+            .then(res => res.json())
+            .then(data => {
+                setGetData(data)
+            })
+    }, [])
 
     function ModalAdd() {
         return (
@@ -34,7 +79,7 @@ function ListProduct({ data }) {
                     <div className="modal_header">
                         <h1>Thêm sản phẩm:</h1>
                     </div>
-                    <AddProduct hide={handleShowAddModal}/>
+                    <AddProduct hide={handleAdd} handleReloadForAdd={handleReloadForAdd} />
                 </div>
             </>
         )
@@ -42,30 +87,12 @@ function ListProduct({ data }) {
     function ModalEdit() {
         return (
             <>
-                <div className="modal">
-                    <div className="modal_header">
-                        <h1>Chỉnh sửa thông tin sản phẩm</h1>
-                    </div>
-                    <div className="modal_body">
-                        <EditProduct
-                            idEdit={idEdit}
-                        />
-                    </div>
-                    <div className="modal_footer">
-                        <div className="modal_footer_groupbtn">
-                            <button
-                                onClick={() => setShowEdit(!showEdit)}
-                            >
-                                <i className='ti-save'></i>
-                            </button>
-                            <button
-                                onClick={() => setShowEdit(!showEdit)}
-                            >
-                                <i className='ti-back-right'></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <EditProduct
+                    idEdit={idEdit}
+                    hide={handleEdit}
+                    handleReloadForEdit={handleReloadForEdit}
+                />
+
             </>
         )
     }
@@ -73,30 +100,11 @@ function ListProduct({ data }) {
     function ModalDelete() {
         return (
             <>
-                <div className="modal">
-                    <div className="modal_header">
-                        <h1>Chỉnh sửa thông tin sản phẩm</h1>
-                    </div>
-                    <div className="modal_body">
-                        <DeleteProduct
-                            idEdit={idEdit}
-                        />
-                    </div>
-                    <div className="modal_footer">
-                        <div className="modal_footer_groupbtn">
-                            <button
-                                onClick={() => setShowDelete(!showDelete)}
-                            >
-                                <i className='ti-save'></i>
-                            </button>
-                            <button
-                                onClick={() => setShowDelete(!showDelete)}
-                            >
-                                <i className='ti-back-right'></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <DeleteProduct
+                    idEdit={idEdit}
+                    hide = {handleDelete}
+                    handleReloadForDelete = {handleReloadForDelete}
+                />
             </>
         )
     }
@@ -115,7 +123,7 @@ function ListProduct({ data }) {
                     </div>
                     <button
                         className="colRight_header_right_add"
-                        onClick={handleShowAddModal}
+                        onClick={handleAdd}
                     >
                         <i className="ti-plus"></i>
                     </button>
@@ -142,7 +150,7 @@ function ListProduct({ data }) {
                     </div>
                     <div className="product_body">
                         {
-                            data.map((item, index) => (
+                            getData.map((item, index) => (
                                 <div key={index} className="product_body_row">
                                     <div className="product_body_row_col">
                                         <h3 className="product_body_row_col_value">{item.id}</h3>
@@ -205,7 +213,7 @@ function ListProduct({ data }) {
                         </ul>
                     </div>
                     {
-                        showAddModal &&
+                        showAdd &&
                         <ModalAdd />
                     }
                     {
