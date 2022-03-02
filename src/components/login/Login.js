@@ -3,17 +3,47 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 import './style.css'
-
+import config from '../../_config'
 
 function Login() {
     const navigate = useNavigate();
+    const port = config()
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
-    
+    const [error, setError] = useState('')
+    const [data, setData] = useState('')
+
+    function checkInfo(name, password) {
+        if (name === '') return false
+        if (password === '') return false
+        return true
+    }
+    function checkRqApi(name){
+        const api = port + "/login?account=" + name
+            fetch(api)
+                .then(res => res.json())
+                .then(datas => {
+                    if(datas.length > 0){
+                        datas.map(item => {
+                            localStorage.setItem("account",item.account)
+                            navigate("/")
+                        })
+                    }
+                    else{
+                        setError("Thông tin tài khoản hoặc mật khẩu không đúng!")
+                    }
+                })
+    }
 
     const handleLogin = () => {
-        navigate('/')
+        if (checkInfo(name, password)) {
+            checkRqApi(name)
+        }
+        else {
+            setError('Vui lòng nhập đủ thông tin!')
+        }
     }
+    
 
     return (
         <div className='login-app'>
@@ -39,6 +69,7 @@ function Login() {
                                 onChange={e => setPassword(e.target.value)}
                             />
                         </div>
+                        <p className='box-right_error'>{error}</p>
                         <button className='btn-login' type='button' onClick={handleLogin}>Đăng nhập</button>
 
                     </form>

@@ -15,7 +15,7 @@ function Header(){
     if(location.pathname === '/admin'){
         activeAdmin = true
     }
-    
+
     return(
         <div className='header-main'
         >
@@ -75,7 +75,7 @@ function Header(){
                                     <Link className='header_account-body_item-text' to="/info">Tài khoản</Link>  
                                 </li>
                                 <li className='header_account-body_item'>
-                                    <Link className='header_account-body_item-text' to="/login">Đăng xuất</Link>
+                                    <Link className='header_account-body_item-text' to="/logout">Đăng xuất</Link>
                                 </li>
                             </ul>
                         </div>
