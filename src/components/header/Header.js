@@ -1,4 +1,5 @@
 import {Routes, Route, Link, useLocation} from 'react-router-dom'
+import { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {useState} from 'react'
 import clsx from 'clsx'
@@ -7,15 +8,31 @@ import clsx from 'clsx'
 import './style.css'
 import logo from '../../images/logo.png'
 import nobody from '../../images/nobody_m.256x256.jpg'
+import config from '../../_config'
 
 function Header(){
+    const port = config()
+    const [avata, setAvata] = useState('')
+    const [name, setName] = useState('')
     const location = useLocation()
     const [hideHeaderAccount, setHideHeaderAccount] = useState()
+
     let activeAdmin = false
     if(location.pathname === '/admin'){
         activeAdmin = true
     }
-
+    const getAccount = localStorage.getItem("account")
+    const api = port + "/users?account=" + getAccount
+    useEffect(() =>{
+        fetch(api)
+          .then(res => res.json())
+          .then(datas => {
+            datas.map(item =>{
+                setAvata(item.avata)
+                setName(item.name)
+            })
+        })
+      }, [])
     return(
         <div className='header-main'
         >
@@ -65,8 +82,10 @@ function Header(){
                         <div className='header_account'
                         >
                             <div className='header_account-header'>
-                                <span className='header-right_link-avta'><img  className='header-avata' src={nobody} alt="avata"/></span>
-                                <span className='header_account-header_name'>Trung Hướng</span>
+                                <span className='header-right_link-avta'>
+                                    <img  className='header-avata' src={avata || nobody} alt="avata"/>
+                                </span>
+                                <span className='header_account-header_name'>{name}</span>
                             </div>
                             <ul className='header_account-body'>
                                 <li className='header_account-body_item'

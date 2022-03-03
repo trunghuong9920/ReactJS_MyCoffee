@@ -4,7 +4,7 @@ import './style.scss'
 import config from "../../../_config"
 import nobody from '../../../images/nobody_m.256x256.jpg'
 
-function EditAvata({ apiSrc, idStaff }) {
+function EditAvata({ apiSrc, idStaff, handleSaveAvataToData}) {
     const port = config()
     const [showEditAvata, setShowEditAvata] = useState(false)
     const [avata, setAvata] = useState('')
@@ -41,7 +41,7 @@ function EditAvata({ apiSrc, idStaff }) {
 
     const handleSaveAvata = () => {
         setShowEditAvata(!showEditAvata)
-        
+        handleSaveAvataToData(avatafromUrl)
     }
     return (
         <>

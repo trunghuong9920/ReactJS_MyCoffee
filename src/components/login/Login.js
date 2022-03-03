@@ -11,7 +11,6 @@ function Login() {
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
-    const [data, setData] = useState('')
 
     function checkInfo(name, password) {
         if (name === '') return false

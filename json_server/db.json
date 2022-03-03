@@ -2,11 +2,11 @@
   "users": [
     {
       "account": "Admin",
-      "name": "Ma Trung Hướng",
+      "name": "Ma Trung Hướn",
       "phone": "0395749843",
       "avata": "https://scontent.fhan2-3.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=q8PiVp_SX1sAX9jiiU8&_nc_ht=scontent.fhan2-3.fna&oh=00_AT-Clf7O8SvmUBUmUoyEub8468COQUBDj2syiTsL79AeGg&oe=6244681E",
       "permission": "Nhân viên",
-      "password": "****",
+      "password": "1",
       "id": 1
     },
     {
@@ -20,9 +20,9 @@
     },
     {
       "account": "trunghuong",
-      "name": "Ma Trung Hướng",
-      "phone": "43874",
-      "avata": "https://scontent.fhan2-3.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=q8PiVp_SX1sAX9jiiU8&_nc_ht=scontent.fhan2-3.fna&oh=00_AT-Clf7O8SvmUBUmUoyEub8468COQUBDj2syiTsL79AeGg&oe=6244681E",
+      "name": "Trung Hướng",
+      "phone": "0395749843",
+      "avata": "https://taimienphi.vn/tmp/cf/aut/anh-gai-xinh-1.jpg",
       "permission": "Nhân viên",
       "password": "1",
       "id": 8
@@ -123,7 +123,7 @@
   ],
   "login": [
     {
-      "id":1,
+      "id": 1,
       "account": "trunghuong"
     }
   ]
