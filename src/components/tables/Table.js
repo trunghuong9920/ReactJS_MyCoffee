@@ -69,7 +69,7 @@ function Table() {
                         <div  key={index}  className={clsx('table_box', 'tableNoempty', {
                             'tableempty':item.status==='Có người',
                         })}>
-                            <Link className="table_box-link"to={`/order?idB=${item.name}`}>{item.name}</Link>
+                            <Link className="table_box-link"to={`/order?idB=${item.id}`}>{item.name}</Link>
                         </div>
                     ))
                 }

@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -8,6 +8,7 @@ import './style.css'
 import Pay from '../pays/Pay'
 import useModal from '../pays/useModal'
 import 'react-toastify/dist/ReactToastify.css';
+import config from '../../_config'
 
 const namelists = ['STT', 'Hình ảnh', 'Tên món', 'Mã món', 'Số lượng', 'Đơn giá (VNĐ)', 'Chiết khấu (%)', 'Giờ vào', 'Thành tiền (VNĐ)', 'Thao tác']
 const products = [
@@ -59,91 +60,51 @@ const products = [
         price: '20000',
     }
 ]
-const listOrders = [
-    {
-        id: '1',
-        number: '2',
-        discount: '20',
-        price: '20000'
-    },
-    {
-        id: '2',
-        number: '5',
-        discount: '20',
-        price: '50000'
-    }
-    ,
-    {
-        id: '3',
-        number: '10',
-        discount: '5',
-        price: '3000'
-    }
-]
-const tabProducts = [
-    {
-        id: '1',
-        name: 'Cà phê'
-    },
-    {
-        id: '2',
-        name: 'Trà'
-    },
-    {
-        id: '3',
-        name: 'Nước ép'
-    },
-    {
-        id: '4',
-        name: 'Sinh tố'
-    },
-    {
-        id: '5',
-        name: 'Thức uống đá xay'
-    }
-    ,
-    {
-        id: '11',
-        name: 'Trà'
-    },
-    {
-        id: '12',
-        name: 'Nước ép'
-    },
-    {
-        id: '13',
-        name: 'Sinh tố'
-    }
-    ,
-    {
-        id: '14',
-        name: 'Sinh tố'
-    }
-]
-const listProducts = [
-    {
-        id: '1',
-        idCate: '1',
-        name: 'Đen đá'
-    },
-    {
-        id: '2',
-        idCate: '1',
-        name: 'Nâu đá'
-    }
-    ,
-    {
-        id: '3',
-        idCate: '2',
-        name: 'Trà đào'
-    }
-]
+
 function Order() {
-    const numberClickNext = tabProducts.length / 4
-    const [countNext,setCountNext] = useState(1)
+    const port = config()
+    const location = useLocation()
+    const query = new URLSearchParams(location.search)
+    const idB = query.get("idB")
+
+    let numberClickNext = 0
+    const [countNext, setCountNext] = useState(1)
     const [tabCate, setTabcate] = useState('1')
     const [tabNext, setTabNext] = useState(0)
+    const [getCategorys, setGetCategorys] = useState([])
+    const [getProduct, setGetProduct] = useState([])
+    const [listOrder, setListOrder] = useState([])
+
     
+    useEffect(() => {
+        const api = port + "/orders?idB=" + idB
+        fetch(api)
+            .then(res => res.json())
+            .then(datas => {
+                setListOrder(datas)
+            })
+    }, [tabCate])
+
+
+    useEffect(() => {
+        const api = port + "/products?idc=" + tabCate
+        fetch(api)
+            .then(res => res.json())
+            .then(datas => {
+                setGetProduct(datas)
+            })
+    }, [tabCate])
+
+    useEffect(() => {
+        const api = port + "/categorys"
+        fetch(api)
+            .then(res => res.json())
+            .then(datas => {
+                setGetCategorys(datas)
+            })
+    }, [])
+    numberClickNext = getCategorys.length / 4
+
     const handlePrev = () => {
         if (tabNext < 0) {
             setTabNext(tabNext + 400)
@@ -151,30 +112,26 @@ function Order() {
         }
     }
     const handleNext = () => {
-        if(countNext < numberClickNext){
+        if (countNext < numberClickNext) {
             setTabNext(tabNext - 400)
             setCountNext(countNext + 1)
         }
     }
 
-    const totalPrice = (number, price, discount) => {
-        return (number * price) - ((number * price) * (discount / 100))
-    }
-
     const { showPay, handleShowPay } = useModal()
 
-    const notify = (name) => 
-    toast.success(`Xóa sản phẩm ${name} thành công!`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+    const notify = (name) =>
+        toast.success(`Xóa sản phẩm ${name} thành công!`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
         });
 
-    function ListOrder({ lists }) {
+    function ListOrder({lists}) {
         return (
             lists.map((item, index) => (
                 <tr key={index} className="list_order-table_col">
@@ -194,7 +151,7 @@ function Order() {
                     </h3></td>
                     <td>
                         <input className='list_order-table_col-number'
-                            defaultValue="2"
+                            defaultValue={item.amount}
                             type="number"
                             min="0"
                         /></td>
@@ -203,15 +160,15 @@ function Order() {
                     </h3></td>
                     <td>
                         <input className='list_order-table_col-discount'
-                            defaultValue="20"
+                            defaultValue={item.discount}
                             type="number"
                         />
                     </td>
                     <td><h3 className="list_order-table_col-boxvalue list_order-table_col-time">
-                        12:05 pm
+                        {item.timeIn}
                     </h3></td>
                     <td><h3 className="list_order-table_col-boxvalue list_order-table_col-price">
-                        120009
+                        {item.totalPrice}
                     </h3></td>
                     <td>
                         <div className="operation-order">
@@ -237,7 +194,7 @@ function Order() {
                 </Link>
                 <i className="order_header-icon">/</i>
                 <Link to="/order" className="order_header-link">
-                    Bàn 1
+                    Bàn {idB}
                 </Link>
             </div>
             <div className="grid">
@@ -258,7 +215,8 @@ function Order() {
                                     <table className="list_order-table">
                                         <tbody>
                                             <ListOrder
-                                                lists={products}
+                                                lists={listOrder}
+                                                
                                             />
                                         </tbody>
                                     </table>
@@ -283,7 +241,7 @@ function Order() {
                                     </div>
                                     <ul className="order-list_product-tabs">
                                         {
-                                            tabProducts.map(item => (
+                                            getCategorys.map(item => (
                                                 <li key={item.id}
                                                     className="order-list_product-item"
                                                     style={{
@@ -313,133 +271,18 @@ function Order() {
                                     >
                                         <i className='ti-angle-right'></i>
                                     </div>
-
                                     <div className="order-list_product-listProduct">
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả mật ong
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả mật ong
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả mật ong
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả mật ong
-                                            </h4>
-                                        </button>
-                                        <button className="order-list_product-listProduct_btn">
-                                            <h4>
-                                                Trà đào cam sả
-                                            </h4>
-                                        </button>
+                                        {
+                                            getProduct.map((item, index) => (
+                                                <button
+                                                    key={index}
+                                                    className="order-list_product-listProduct_btn">
+                                                    <h4>
+                                                        {item.name}
+                                                    </h4>
+                                                </button>
+                                            ))
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -494,7 +337,7 @@ function Order() {
                     lists={products}
                 />
             }
-            <ToastContainer 
+            <ToastContainer
                 position="top-right"
                 autoClose={5000}
                 hideProgressBar={false}

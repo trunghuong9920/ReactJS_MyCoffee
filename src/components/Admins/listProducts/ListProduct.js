@@ -35,6 +35,7 @@ function ListProduct() {
         const data = [...getData]
         const newData = {
             id: lastItem.id + 1,
+            img: formData.img,
             name: formData.name,
             nameC: formData.nameC,
             idc: formData.idc,
@@ -53,6 +54,7 @@ function ListProduct() {
                     item.nameC = formData.nameC
                     item.idc = formData.idc
                     item.price = formData.price
+                    item.img = formData.img
                 }
                 return item
             }
@@ -136,6 +138,9 @@ function ListProduct() {
                             <h3 className="product_title_col_value">Id</h3>
                         </div>
                         <div className="product_title_col">
+                            <h3 className="product_title_col_value">Hình ảnh</h3>
+                        </div>
+                        <div className="product_title_col">
                             <h3 className="product_title_col_value">Tên sản phẩm</h3>
                         </div>
                         <div className="product_title_col">
@@ -154,6 +159,12 @@ function ListProduct() {
                                 <div key={index} className="product_body_row">
                                     <div className="product_body_row_col">
                                         <h3 className="product_body_row_col_value">{item.id}</h3>
+                                    </div>
+                                    <div className="product_body_row_col">
+                                        <img 
+                                            className='product_body_row_col_img'
+                                            src={item.img}
+                                        />
                                     </div>
                                     <div className="product_body_row_col">
                                         <h3 className="product_body_row_col_value">{item.name}</h3>

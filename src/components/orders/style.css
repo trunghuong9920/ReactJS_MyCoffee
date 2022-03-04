@@ -276,7 +276,7 @@
     border-radius: 12px;
     cursor: pointer;
     background-color: var(--color-9);
-    box-shadow: 0 9px 12px rgb(0 0 0 / 50%);
+    box-shadow: 3px 1px 4px rgb(0 0 0 / 50%);
 }
 .order-list_product-listProduct_btn h4{
     text-align: center;

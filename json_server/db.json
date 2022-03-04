@@ -70,28 +70,35 @@
     {
       "name": "Trà",
       "id": 4
+    },
+    {
+      "name": "Cà phê sáng tạo",
+      "id": 5
     }
   ],
   "products": [
     {
-      "id": 1,
       "nameC": "Cà phê máy",
       "idc": 2,
       "name": "Nâu đá",
-      "price": 10000
+      "price": 10000,
+      "img": "https://bboomersbar.com/cach-lam-cafe-nau-da/imager_54332.jpg",
+      "id": 1
     },
     {
-      "id": 2,
       "nameC": "Cà phê máy",
       "idc": 2,
       "name": "Đen đá",
-      "price": 10000
+      "price": 10000,
+      "img": "https://neomartpro.com/wp-content/uploads/2020/05/cafedenda-1.jpg",
+      "id": 2
     },
     {
       "nameC": "Sinh tố",
       "idc": "3",
       "name": "Xoài",
       "price": "30000",
+      "img": "https://www.bartender.edu.vn/wp-content/uploads/2020/04/sinh-to-xoai.jpg",
       "id": 5
     },
     {
@@ -99,26 +106,58 @@
       "idc": "4",
       "name": "Trà Đào",
       "price": "3123",
+      "img": "https://res.klook.com/image/upload/v1596017380/blog/fdhbsx1x6tmyswssvb1v.jpg",
       "id": 6
+    },
+    {
+      "nameC": "Cà phê truyền thống",
+      "idc": 1,
+      "name": "Cà phê phin",
+      "price": "20000",
+      "img": "https://i.pinimg.com/564x/18/f8/22/18f822a007df869258b80a7c82471fa0.jpg",
+      "id": 7
+    },
+    {
+      "nameC": "Cà phê sáng tạo",
+      "idc": "5",
+      "img": "https://classiccoffee.com.vn/upload/afY3GsaH62R8X9niHhKcmcFTLfeEBKoL0nP.jpg",
+      "name": "Cà phê trứng",
+      "price": "40000",
+      "id": 8
+    },
+    {
+      "nameC": "Cà phê sáng tạo",
+      "idc": "5",
+      "img": "http://barista.vn/UserUpload/Product/ly-ca-phe-latte-300-ml-mau-cam-do.jpg?Watermark=",
+      "name": "Cà phê Latte",
+      "price": "45000",
+      "id": 9
     }
   ],
-  "details": [
+  "orders": [
     {
       "id": 1,
       "idB": 1,
-      "totalPrice": "",
-      "timeOut": "",
-      "totalDiscount": ""
-    }
-  ],
-  "invoiceDetail": [
+      "img": "https://res.klook.com/image/upload/v1596017380/blog/fdhbsx1x6tmyswssvb1v.jpg",
+      "name": "Trà đào",
+      "idP": 6,
+      "amount": 5,
+      "price": 20000,
+      "discount": 30,
+      "timeIn": "12:00",
+      "totalPrice": 10000
+    },
     {
-      "id": 1,
-      "idD": 1,
-      "idP": 1,
-      "amount": 2,
-      "timeIn": "",
-      "totalPrice": ""
+      "id": 2,
+      "idB": 1,
+      "img": "https://bonjourcoffee.vn/blog/wp-content/uploads/2020/02/cach-pha-cafe-phin.jpg",
+      "name": "Cà phê phin",
+      "idP": 7,
+      "amount": 5,
+      "price": 20000,
+      "discount": 20,
+      "timeIn": "12:00",
+      "totalPrice": 10002
     }
   ],
   "login": [
