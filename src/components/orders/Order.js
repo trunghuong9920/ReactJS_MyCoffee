@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState, useEffect } from 'react'
+import { useState, useEffect} from 'react'
 import clsx from 'clsx'
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -77,6 +77,8 @@ function Order() {
     const [getProduct, setGetProduct] = useState([])
     const [listOrder, setListOrder] = useState([])
     const [reloadApiOrder, setReloadApiOrder] = useState(false)
+    const [nameTable, setNameTable] = useState('')
+    const [totalAllOrder, setTotalAllOrder] = useState(0)
 
     const handleAddOrder = (item) => {
 
@@ -126,8 +128,8 @@ function Order() {
         }
     }
     const handleUpdateAmountOrder = (value, item) => {
-        if(value != ''){
-            if(value <= 0){
+        if (value != '') {
+            if (value <= 0) {
                 value = 1
                 const formData = {
                     "idB": idB,
@@ -143,7 +145,7 @@ function Order() {
                 editData(api, formData)
                 setReloadApiOrder(!reloadApiOrder)
             }
-            else{
+            else {
                 const formData = {
                     "idB": idB,
                     "img": item.img,
@@ -162,7 +164,7 @@ function Order() {
 
     }
     const handleUpdateDiscountOrder = (value, item) => {
-        if(value != ''){
+        if (value != '') {
             const formData = {
                 "idB": idB,
                 "img": item.img,
@@ -177,14 +179,14 @@ function Order() {
             editData(api, formData)
         }
         setReloadApiOrder(!reloadApiOrder)
-        
+
     }
-    const handleDeleteOrder = (id) =>{
+    const handleDeleteOrder = (id) => {
         const api = port + "/orders"
         deleteData(api, id)
         reloadDeleteOrder(id)
     }
-    function reloadDeleteOrder(id){
+    function reloadDeleteOrder(id) {
         setListOrder(listOrder.filter(item => item.id != id))
     }
     function reloadForAddOrder(item) {
@@ -232,15 +234,34 @@ function Order() {
     }
 
     useEffect(() => {
+        const api = port + "/tables?id=" + idB
+        fetch(api)
+            .then(res => res.json())
+            .then(datas => {
+
+                datas.map(item => {
+                    setNameTable(item.name)
+                })
+            })
+    }, [reloadApiOrder])
+
+    
+    useEffect(() => {
         const api = port + "/orders?idB=" + idB
         fetch(api)
             .then(res => res.json())
             .then(datas => {
                 setListOrder(datas)
+                let totalPriceItem = 0
+                setTotalAllOrder(0)
+                datas.map(item =>{
+                    totalPriceItem += totalPrice(item.amount,item.discount, item.price);
+                })
+                setTotalAllOrder(totalPriceItem)
             })
     }, [reloadApiOrder])
 
-
+   
     useEffect(() => {
         const api = port + "/products?idc=" + tabCate
         fetch(api)
@@ -285,9 +306,32 @@ function Order() {
             draggable: true,
             progress: undefined,
         });
+    const notifyCB = () =>
+        toast.success(`Báo chế biến thành công!`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    const notifyPay = () =>
+        toast.success(`Thanh toán thành công!`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    
     function totalPrice(amount, discount, price) {
-        return (amount * price) - (((amount * price) / 100) * discount)
+        const tt = (amount * price) - (((amount * price) / 100) * discount)
+        return tt
     }
+
 
     function ListOrder({ lists }) {
         return (
@@ -328,15 +372,17 @@ function Order() {
                         {item.timeIn}
                     </h3></td>
                     <td><h3 className="list_order-table_col-boxvalue list_order-table_col-price">
-                        {totalPrice(item.amount, item.discount, item.price)}
+                        {
+                            totalPrice(item.amount, item.discount, item.price)
+                        }
                     </h3></td>
                     <td>
                         <div className="operation-order">
                             <span className="operation-order_close"
                                 onClick={() => {
-                                        notify(item.name)
-                                        handleDeleteOrder(item.id)
-                                    }   
+                                    notify(item.name)
+                                    handleDeleteOrder(item.id)
+                                }
                                 }
                             >
                                 <i className='ti-close'>
@@ -358,7 +404,7 @@ function Order() {
                 </Link>
                 <i className="order_header-icon">/</i>
                 <Link to="/order" className="order_header-link">
-                    Bàn {idB}
+                    Bàn {nameTable}
                 </Link>
             </div>
             <div className="grid">
@@ -457,9 +503,11 @@ function Order() {
                     <div className="col l-2">
                         <ul className="order_right">
                             <li className="order_right-item order_rigth-boxshardow">
-                                <button className="order_right-link ">
+                                <button className="order_right-link "
+                                    onClick={() => setReloadApiOrder(!reloadApiOrder)}
+                                >
                                     <h3
-                                        onClick={() => setReloadApiOrder(!reloadApiOrder)}
+                                        
                                     >Cập nhật</h3>
                                 </button>
                             </li>
@@ -468,13 +516,12 @@ function Order() {
                                     <h3>Chuyển bàn</h3>
                                 </Link>
                             </li>
-                            <li className="order_right-item">
-                                <h3 className="order_right-item_tile">Chiết khấu (%):</h3>
-                                <input type="number" defaultValue="20" />
-                            </li>
-                            <li className="order_right-item">
+                            
+                            <li className="order_right-item order_right-item-totalprice">
                                 <h3 className="order_right-item_tile">Tổng tiền (VNĐ):</h3>
-                                <input readOnly={true} defaultValue="200000" />
+                                <input readOnly={true}
+                                    value = {totalAllOrder}
+                                />
                             </li>
                             <li className="order_right-item order_rigth-boxshardow">
                                 <button
@@ -485,7 +532,9 @@ function Order() {
                                 </button>
                             </li>
                             <li className="order_right-item order_rigth-boxshardow">
-                                <button className="order_right-link ">
+                                <button className="order_right-link "
+                                    onClick={notifyCB}
+                                >
                                     <h3>Báo chế biến</h3>
                                 </button>
                             </li>
@@ -502,7 +551,9 @@ function Order() {
                 <Pay
                     showPay={showPay}
                     hide={handleShowPay}
-                    lists={products}
+                    idB={idB}
+                    nameTable={nameTable}
+                    notifyPay = {notifyPay}
                 />
             }
             <ToastContainer

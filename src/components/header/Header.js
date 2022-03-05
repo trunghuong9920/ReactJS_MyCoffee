@@ -75,7 +75,7 @@ function Header(){
                         <label htmlFor='cb_header_account' className='header-right_link-avta'
                             onClick={()=>setHideHeaderAccount(!hideHeaderAccount)}
                         >
-                            <img  className='header-avata' src="https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/171505849_1154496398337506_1856116372601333077_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=9Q4-Ut3AjqwAX9m0fRQ&_nc_ht=scontent.fhan14-2.fna&oh=00_AT-vA4DwkHounlR7LncBBPErQWbvQ5LegoYg6wrYu1iHJA&oe=6230A19E" alt="avata"/></label>
+                            <img  className='header-avata' src={avata} alt="avata"/></label>
                         <input type="checkbox" id='cb_header_account' hidden className='cb_header_account'
                             checked = {hideHeaderAccount}
                         />

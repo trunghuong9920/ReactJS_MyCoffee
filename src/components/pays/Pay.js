@@ -1,26 +1,34 @@
 import { ToastContainer, toast } from 'react-toastify';
+import {useState ,useEffect} from 'react'
 
 import 'react-toastify/dist/ReactToastify.css';
 import './style.css'
+import config from '../../_config';
 
 const namelists = ['STT', 'Hình ảnh', 'Tên món', 'Mã món', 'Số lượng','Đơn giá (VNĐ)', 'Chiết khấu (%)', 'Giờ vào', 'Thành tiền (VNĐ)','Lựa chọn']
-function Pay({ showPay, hide, lists }) {
-    const notify = () => 
-    toast.success(`Xóa sản phẩm thành công!`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        });
-    const handlePay = () =>{
-        notify()
+function Pay({ showPay, hide, idB , nameTable , notifyPay}) {
+    const port = config()
+    const [listOrder, setListOrder] = useState([])
+    useEffect(() => {
+        const api = port + "/orders?idB=" + idB
+        fetch(api)
+            .then(res => res.json())
+            .then(datas => {
+                setListOrder(datas)
+            })
+    }, [])
+
+    
+    const  printInvoice = () =>{
+        notifyPay()
+        hide()
     }
-    function ListPay({ lists }) {
+    function totalPrice(amount, discount, price) {
+        return (amount * price) - (((amount * price) / 100) * discount)
+    }
+    function ListPay({listOrder}) {
         return (
-            lists.map((item, index) => (
+            listOrder.map((item, index) => (
                 <label htmlFor={`pay_checkbox-${index}`} key={index} className="pay_body-table_col">
                     <div><h3 className="pay_body-table_col-boxvalue">
                         {index}
@@ -33,19 +41,19 @@ function Pay({ showPay, hide, lists }) {
                         {item.id}
                     </h3></div>
                     <div><h3 className="pay_body-table_col-boxvalue">
-                       2
+                       {item.amount}
                     </h3></div>
                     <div><h3 className="pay_body-table_col-boxvalue pay_body-table_col-price">
-                       20000
+                       {item.price}
                     </h3></div>
                     <div><h3 className="pay_body-table_col-boxvalue">
-                        40
+                        {item.discount}
                     </h3></div>
                     <div><h3 className="pay_body-table_col-boxvalue pay_body-table_col-time">
-                        12h30 pm
+                        {item.timeIn}
                     </h3></div>
                     <div><h3 className="pay_body-table_col-boxvalue pay_body-table_col-price">
-                        40000000
+                        {totalPrice(item.amount, item.discount, item.price)}
                     </h3></div>
                     <div>
                         <input
@@ -74,7 +82,7 @@ function Pay({ showPay, hide, lists }) {
                     <div className="overlay" htmlFor='check_overlay'></div>
                     <div className="pay-box">
                         <div className="pay-box_title">
-                            <h3><i className='ti-tablet'></i> Bàn 1:</h3>
+                            <h3><i className='ti-tablet'></i> Bàn {nameTable}:</h3>
                             <button
                                 className="pay-box_btnBack"
                                 onClick={hide}
@@ -95,7 +103,7 @@ function Pay({ showPay, hide, lists }) {
                                     }
                                 </div>
                                 <div className='pay-box_body-table'>
-                                    <ListPay lists={lists}/>
+                                    <ListPay listOrder={listOrder}/>
                                 </div>
                             </div>
                             <div className="pay-box_body-bottom">
@@ -126,7 +134,7 @@ function Pay({ showPay, hide, lists }) {
                                         <button onClick={hide}>Tạm tính</button>
                                     </div>
                                     <div className="pay-box_bottom-right_item">
-                                        <button onClick={handlePay, hide}>In hóa đơn</button>
+                                        <button onClick={printInvoice}>In hóa đơn</button>
                                     </div>
                                 </div>
                             </div>
@@ -134,17 +142,7 @@ function Pay({ showPay, hide, lists }) {
                     </div>
                 </>
             }
-            <ToastContainer 
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
+            
         </div>
     )
 }

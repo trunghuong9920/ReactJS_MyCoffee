@@ -105,7 +105,7 @@
       "nameC": "Trà",
       "idc": "4",
       "name": "Trà Đào",
-      "price": "3123",
+      "price": "10000",
       "img": "https://res.klook.com/image/upload/v1596017380/blog/fdhbsx1x6tmyswssvb1v.jpg",
       "id": 6
     },
@@ -175,20 +175,20 @@
       "idP": 5,
       "amount": "5",
       "price": "30000",
-      "discount": "15",
+      "discount": "10",
       "timeIn": "9:10 5-3-2022",
       "id": 5
     },
     {
       "idB": "2",
-      "img": "https://res.klook.com/image/upload/v1596017380/blog/fdhbsx1x6tmyswssvb1v.jpg",
-      "name": "Trà Đào",
+      "img": "https://i.pinimg.com/564x/18/f8/22/18f822a007df869258b80a7c82471fa0.jpg",
+      "name": "Cà phê phin",
       "idP": 7,
-      "amount": 1,
-      "price": "3123",
-      "discount": "17",
-      "timeIn": "10:57 5-3-2022",
-      "id": 7
+      "amount": 2,
+      "price": "20000",
+      "discount": 0,
+      "timeIn": "22:3 5-3-2022",
+      "id": 6
     }
   ],
   "login": [
