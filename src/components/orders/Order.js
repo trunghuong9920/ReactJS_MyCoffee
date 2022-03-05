@@ -9,6 +9,7 @@ import Pay from '../pays/Pay'
 import useModal from '../pays/useModal'
 import 'react-toastify/dist/ReactToastify.css';
 import config from '../../_config'
+import ApiController from '../../services/apiController';
 
 const namelists = ['STT', 'Hình ảnh', 'Tên món', 'Mã món', 'Số lượng', 'Đơn giá (VNĐ)', 'Chiết khấu (%)', 'Giờ vào', 'Thành tiền (VNĐ)', 'Thao tác']
 const products = [
@@ -63,6 +64,7 @@ const products = [
 
 function Order() {
     const port = config()
+    const { create, editData } = ApiController()
     const location = useLocation()
     const query = new URLSearchParams(location.search)
     const idB = query.get("idB")
@@ -74,8 +76,133 @@ function Order() {
     const [getCategorys, setGetCategorys] = useState([])
     const [getProduct, setGetProduct] = useState([])
     const [listOrder, setListOrder] = useState([])
+    const [reloadApiOrder, setReloadApiOrder] = useState(false)
 
-    
+    const handleAddOrder = (item) => {
+
+        if (checkItemInOrder(item)) {
+            let AmountOld = 0;
+            let timeInOld = ''
+            let idOrder = 0
+            let discountOld = 0
+            listOrder.map(it => {
+                if (it.idP === item.id) {
+                    AmountOld = it.amount
+                    timeInOld = it.timeIn
+                    idOrder = it.id
+                    discountOld = it.discount
+                }
+            })
+            const formData = {
+                "idB": idB,
+                "img": item.img,
+                "name": item.name,
+                "idP": item.id,
+                "amount": AmountOld + 1,
+                "price": item.price,
+                "discount": discountOld,
+                "timeIn": timeInOld
+            }
+            const api = port + "/orders/" + idOrder
+            editData(api, formData)
+            reloadForAddOrder(item)
+        }
+        else {
+            const today = new Date()
+            const timeIn = today.getHours() + ":" + today.getMinutes() + " " + today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+            const formData = {
+                "idB": idB,
+                "img": item.img,
+                "name": item.name,
+                "idP": item.id,
+                "amount": 1,
+                "price": item.price,
+                "discount": 0,
+                "timeIn": timeIn
+            }
+            const api = port + "/orders"
+            create(api, formData)
+            reloadForAddNewOrder(item, timeIn)
+        }
+    }
+    const handleUpdateAmountOrder = (value, item) => {
+        const formData = {
+            "idB": idB,
+            "img": item.img,
+            "name": item.name,
+            "idP": item.id,
+            "amount": value,
+            "price": item.price,
+            "discount": item.discount,
+            "timeIn": item.timeIn
+        }
+        const api = port + "/orders/" + item.id
+        editData(api, formData)
+        setReloadApiOrder(!reloadApiOrder)
+
+    }
+    const handleUpdateDiscountOrder = (value, item) => {
+        if(value != ''){
+            const formData = {
+                "idB": idB,
+                "img": item.img,
+                "name": item.name,
+                "idP": item.id,
+                "amount": item.amount,
+                "price": item.price,
+                "discount": value,
+                "timeIn": item.timeIn
+            }
+            const api = port + "/orders/" + item.id
+            editData(api, formData)
+        setReloadApiOrder(!reloadApiOrder)
+
+        }
+    }
+    function reloadForAddOrder(item) {
+        const data = [...listOrder]
+        const newData = data.map(
+            it => {
+                if (it.idP === item.id) {
+                    it.amount += 1
+                }
+                return it
+            }
+
+        )
+        setListOrder(newData)
+    }
+    function reloadForAddNewOrder(item, timeIn) {
+        const data = [...listOrder]
+        const newData = {
+            "idB": idB,
+            "img": item.img,
+            "name": item.name,
+            "idP": item.id,
+            "amount": 1,
+            "price": item.price,
+            "discount": 0,
+            "timeIn": timeIn
+        }
+        data.push(newData)
+        setListOrder(data)
+    }
+
+    function checkItemInOrder(it) {
+        let count = 0;
+        listOrder.map(item => {
+            if (item.idP === it.id) {
+                count += 1
+            }
+        })
+        if (count === 0) {
+            return false
+        }
+        else {
+            return true
+        }
+    }
+
     useEffect(() => {
         const api = port + "/orders?idB=" + idB
         fetch(api)
@@ -83,7 +210,7 @@ function Order() {
             .then(datas => {
                 setListOrder(datas)
             })
-    }, [tabCate])
+    }, [reloadApiOrder])
 
 
     useEffect(() => {
@@ -130,8 +257,11 @@ function Order() {
             draggable: true,
             progress: undefined,
         });
+    function totalPrice(amount, discount, price) {
+        return (amount * price) - (((amount * price) / 100) * discount)
+    }
 
-    function ListOrder({lists}) {
+    function ListOrder({ lists }) {
         return (
             lists.map((item, index) => (
                 <tr key={index} className="list_order-table_col">
@@ -147,13 +277,14 @@ function Order() {
                         {item.name}
                     </h3></td>
                     <td><h3 className="list_order-table_col-boxvalue">
-                        {item.id}
+                        {item.idP}
                     </h3></td>
                     <td>
                         <input className='list_order-table_col-number'
                             defaultValue={item.amount}
                             type="number"
-                            min="0"
+                            min="1"
+                            onChange={e => handleUpdateAmountOrder(e.target.value, item)}
                         /></td>
                     <td><h3 className="list_order-table_col-boxvalue list_order-table_col-price">
                         {item.price}
@@ -161,14 +292,15 @@ function Order() {
                     <td>
                         <input className='list_order-table_col-discount'
                             defaultValue={item.discount}
-                            type="number"
+                            type="text"
+                            onChange={e => handleUpdateDiscountOrder(e.target.value, item)}
                         />
                     </td>
                     <td><h3 className="list_order-table_col-boxvalue list_order-table_col-time">
                         {item.timeIn}
                     </h3></td>
                     <td><h3 className="list_order-table_col-boxvalue list_order-table_col-price">
-                        {item.totalPrice}
+                        {totalPrice(item.amount, item.discount, item.price)}
                     </h3></td>
                     <td>
                         <div className="operation-order">
@@ -216,7 +348,7 @@ function Order() {
                                         <tbody>
                                             <ListOrder
                                                 lists={listOrder}
-                                                
+
                                             />
                                         </tbody>
                                     </table>
@@ -276,7 +408,9 @@ function Order() {
                                             getProduct.map((item, index) => (
                                                 <button
                                                     key={index}
-                                                    className="order-list_product-listProduct_btn">
+                                                    className="order-list_product-listProduct_btn"
+                                                    onClick={() => handleAddOrder(item)}
+                                                >
                                                     <h4>
                                                         {item.name}
                                                     </h4>
@@ -292,7 +426,9 @@ function Order() {
                         <ul className="order_right">
                             <li className="order_right-item order_rigth-boxshardow">
                                 <button className="order_right-link ">
-                                    <h3>Cập nhật</h3>
+                                    <h3
+                                        onClick={() => setReloadApiOrder(!reloadApiOrder)}
+                                    >Cập nhật</h3>
                                 </button>
                             </li>
                             <li className="order_right-item order_rigth-boxshardow">

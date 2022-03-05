@@ -136,28 +136,59 @@
   ],
   "orders": [
     {
-      "id": 1,
-      "idB": 1,
+      "idB": "1",
       "img": "https://res.klook.com/image/upload/v1596017380/blog/fdhbsx1x6tmyswssvb1v.jpg",
-      "name": "Trà đào",
+      "name": "Trà Đào",
       "idP": 6,
-      "amount": 5,
-      "price": 20000,
+      "amount": 6,
+      "price": "3123",
       "discount": 30,
       "timeIn": "12:00",
-      "totalPrice": 10000
+      "id": 1
     },
     {
-      "id": 2,
-      "idB": 1,
-      "img": "https://bonjourcoffee.vn/blog/wp-content/uploads/2020/02/cach-pha-cafe-phin.jpg",
+      "idB": "1",
+      "img": "https://i.pinimg.com/564x/18/f8/22/18f822a007df869258b80a7c82471fa0.jpg",
       "name": "Cà phê phin",
       "idP": 7,
-      "amount": 5,
-      "price": 20000,
-      "discount": 20,
+      "amount": 7,
+      "price": "20000",
+      "discount": 0,
       "timeIn": "12:00",
-      "totalPrice": 10002
+      "id": 2
+    },
+    {
+      "idB": "1",
+      "img": "https://bboomersbar.com/cach-lam-cafe-nau-da/imager_54332.jpg",
+      "name": "Nâu đá",
+      "idP": 1,
+      "amount": 1,
+      "price": 10000,
+      "discount": 0,
+      "timeIn": "9:9 5-3-2022",
+      "id": 3
+    },
+    {
+      "idB": "2",
+      "img": "https://i.pinimg.com/564x/18/f8/22/18f822a007df869258b80a7c82471fa0.jpg",
+      "name": "Cà phê phin",
+      "idP": 4,
+      "amount": "3",
+      "price": "20000",
+      "discount": "30",
+      "timeIn": "9:10 5-3-2022",
+      "id": 4
+    },
+    {
+      "idB": "2",
+      "img": "https://www.bartender.edu.vn/wp-content/uploads/2020/04/sinh-to-xoai.jpg",
+      "name": "Xoài",
+      "idP": 5,
+      "amount": "2",
+      "price": "30000",
+      "discount": "20",
+      "timeIn": "9:10 5-3-2022",
+      "id": 5
     }
   ],
   "login": [
