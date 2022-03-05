@@ -64,7 +64,7 @@ const products = [
 
 function Order() {
     const port = config()
-    const { create, editData } = ApiController()
+    const { create, editData, deleteData } = ApiController()
     const location = useLocation()
     const query = new URLSearchParams(location.search)
     const idB = query.get("idB")
@@ -126,19 +126,39 @@ function Order() {
         }
     }
     const handleUpdateAmountOrder = (value, item) => {
-        const formData = {
-            "idB": idB,
-            "img": item.img,
-            "name": item.name,
-            "idP": item.id,
-            "amount": value,
-            "price": item.price,
-            "discount": item.discount,
-            "timeIn": item.timeIn
+        if(value != ''){
+            if(value <= 0){
+                value = 1
+                const formData = {
+                    "idB": idB,
+                    "img": item.img,
+                    "name": item.name,
+                    "idP": item.id,
+                    "amount": value,
+                    "price": item.price,
+                    "discount": item.discount,
+                    "timeIn": item.timeIn
+                }
+                const api = port + "/orders/" + item.id
+                editData(api, formData)
+                setReloadApiOrder(!reloadApiOrder)
+            }
+            else{
+                const formData = {
+                    "idB": idB,
+                    "img": item.img,
+                    "name": item.name,
+                    "idP": item.id,
+                    "amount": value,
+                    "price": item.price,
+                    "discount": item.discount,
+                    "timeIn": item.timeIn
+                }
+                const api = port + "/orders/" + item.id
+                editData(api, formData)
+                setReloadApiOrder(!reloadApiOrder)
+            }
         }
-        const api = port + "/orders/" + item.id
-        editData(api, formData)
-        setReloadApiOrder(!reloadApiOrder)
 
     }
     const handleUpdateDiscountOrder = (value, item) => {
@@ -155,9 +175,17 @@ function Order() {
             }
             const api = port + "/orders/" + item.id
             editData(api, formData)
-        setReloadApiOrder(!reloadApiOrder)
-
         }
+        setReloadApiOrder(!reloadApiOrder)
+        
+    }
+    const handleDeleteOrder = (id) =>{
+        const api = port + "/orders"
+        deleteData(api, id)
+        reloadDeleteOrder(id)
+    }
+    function reloadDeleteOrder(id){
+        setListOrder(listOrder.filter(item => item.id != id))
     }
     function reloadForAddOrder(item) {
         const data = [...listOrder]
@@ -293,7 +321,7 @@ function Order() {
                         <input className='list_order-table_col-discount'
                             defaultValue={item.discount}
                             type="text"
-                            onChange={e => handleUpdateDiscountOrder(e.target.value, item)}
+                            onBlur={e => handleUpdateDiscountOrder(e.target.value, item)}
                         />
                     </td>
                     <td><h3 className="list_order-table_col-boxvalue list_order-table_col-time">
@@ -305,7 +333,11 @@ function Order() {
                     <td>
                         <div className="operation-order">
                             <span className="operation-order_close"
-                                onClick={() => notify(item.name)}
+                                onClick={() => {
+                                        notify(item.name)
+                                        handleDeleteOrder(item.id)
+                                    }   
+                                }
                             >
                                 <i className='ti-close'>
                                 </i>

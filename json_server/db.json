@@ -170,25 +170,25 @@
     },
     {
       "idB": "2",
-      "img": "https://i.pinimg.com/564x/18/f8/22/18f822a007df869258b80a7c82471fa0.jpg",
-      "name": "Cà phê phin",
-      "idP": 4,
-      "amount": "3",
-      "price": "20000",
-      "discount": "30",
-      "timeIn": "9:10 5-3-2022",
-      "id": 4
-    },
-    {
-      "idB": "2",
       "img": "https://www.bartender.edu.vn/wp-content/uploads/2020/04/sinh-to-xoai.jpg",
       "name": "Xoài",
       "idP": 5,
-      "amount": "2",
+      "amount": "5",
       "price": "30000",
-      "discount": "20",
+      "discount": "15",
       "timeIn": "9:10 5-3-2022",
       "id": 5
+    },
+    {
+      "idB": "2",
+      "img": "https://res.klook.com/image/upload/v1596017380/blog/fdhbsx1x6tmyswssvb1v.jpg",
+      "name": "Trà Đào",
+      "idP": 7,
+      "amount": 1,
+      "price": "3123",
+      "discount": "17",
+      "timeIn": "10:57 5-3-2022",
+      "id": 7
     }
   ],
   "login": [
