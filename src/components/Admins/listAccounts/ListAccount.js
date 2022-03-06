@@ -16,7 +16,7 @@ function ListAccount() {
     const [showEdit, setShowEdit] = useState(false)
     const [showDelete, setShowDelete] = useState(false)
     const [idEdit, setIdEdit] = useState()
-
+    
     const handleAdd = () =>{
         setShowAdd(!showAdd)
     }

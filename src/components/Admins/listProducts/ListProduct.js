@@ -16,6 +16,25 @@ function ListProduct() {
     const [idEdit, setIdEdit] = useState()
 
 
+    const [positionPage, setPositionPage] = useState(1)
+    const [newData, setNewData] = useState([])
+    let numberIteminPage = 2;
+    let totalPage = Math.round(getData.length / numberIteminPage)
+    let startPage = numberIteminPage * positionPage - numberIteminPage
+    let endPage = numberIteminPage * positionPage
+    
+    
+    useEffect(() => {
+       
+        const data = []
+        getData.map((item, index) => {
+            if (index >= startPage && index < endPage) {
+                data.push(item)
+            }
+        })
+        setNewData(data)
+    }, [positionPage,getData])
+
     const handleAdd = () => {
         setShowAdd(!showAdd)
     }
@@ -104,8 +123,8 @@ function ListProduct() {
             <>
                 <DeleteProduct
                     idEdit={idEdit}
-                    hide = {handleDelete}
-                    handleReloadForDelete = {handleReloadForDelete}
+                    hide={handleDelete}
+                    handleReloadForDelete={handleReloadForDelete}
                 />
             </>
         )
@@ -155,13 +174,13 @@ function ListProduct() {
                     </div>
                     <div className="product_body">
                         {
-                            getData.map((item, index) => (
+                            newData.map((item, index) => (
                                 <div key={index} className="product_body_row">
                                     <div className="product_body_row_col">
                                         <h3 className="product_body_row_col_value">{item.id}</h3>
                                     </div>
                                     <div className="product_body_row_col">
-                                        <img 
+                                        <img
                                             className='product_body_row_col_img'
                                             src={item.img}
                                         />
@@ -192,24 +211,28 @@ function ListProduct() {
                     <div className="paginate">
                         <ul className="paginate_list">
                             <li className="paginate_list_item">
-                                <Link className="paginate_list_link" to="/admin">
+                                <button className="paginate_list_link">
                                     <span><i className="ti-angle-left"></i></span>
-                                </Link>
+                                </button>
                             </li>
-                            <li className="paginate_list_item paginate_list_item-active">
-                                <Link className="paginate_list_link" to="/admin">
+                            <li className="paginate_list_item ">
+                                <button className="paginate_list_link paginate_list_link-active"
+                                    onClick={() => setPositionPage(1)}
+                                >
                                     <span>1</span>
-                                </Link>
+                                </button>
                             </li>
                             <li className="paginate_list_item">
-                                <Link className="paginate_list_link" to="/admin">
+                                <button className="paginate_list_link"
+                                    onClick={() => setPositionPage(2)}
+                                >
                                     <span>2</span>
-                                </Link>
+                                </button>
                             </li>
                             <li className="paginate_list_item">
-                                <Link className="paginate_list_link" to="/admin">
+                                <button className="paginate_list_link">
                                     <span>3</span>
-                                </Link>
+                                </button>
                             </li>
                             <li className="paginate_list_item">
                                 <div className="paginate_list_link">
@@ -217,9 +240,9 @@ function ListProduct() {
                                 </div>
                             </li>
                             <li className="paginate_list_item">
-                                <Link className="paginate_list_link" to="/admin">
+                                <button className="paginate_list_link" >
                                     <span><i className="ti-angle-right"></i></span>
-                                </Link>
+                                </button>
                             </li>
                         </ul>
                     </div>

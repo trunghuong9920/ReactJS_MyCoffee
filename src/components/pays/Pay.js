@@ -9,6 +9,9 @@ const namelists = ['STT', 'Hình ảnh', 'Tên món', 'Mã món', 'Số lượng
 function Pay({ showPay, hide, idB , nameTable , notifyPay}) {
     const port = config()
     const [listOrder, setListOrder] = useState([])
+    const [totalAllOrder, setTotalAllOrder] = useState(0)
+    const [discountPay, setDiscountPay] = useState(0)
+
     useEffect(() => {
         const api = port + "/orders?idB=" + idB
         fetch(api)
@@ -16,9 +19,8 @@ function Pay({ showPay, hide, idB , nameTable , notifyPay}) {
             .then(datas => {
                 setListOrder(datas)
             })
-    }, [])
+    }, [showPay])
 
-    
     const  printInvoice = () =>{
         notifyPay()
         hide()
@@ -26,10 +28,29 @@ function Pay({ showPay, hide, idB , nameTable , notifyPay}) {
     function totalPrice(amount, discount, price) {
         return (amount * price) - (((amount * price) / 100) * discount)
     }
+    function totalWillPay(){
+        return totalAllOrder - (totalAllOrder/100*discountPay)
+    }
+    useEffect(()=>{
+        let totalPriceItem = 0
+        setTotalAllOrder(0)
+        listOrder.map(item=>{
+            const CheckPay = document.getElementById(`pay_checkbox-${item.id}`)
+            if(CheckPay){
+                if(CheckPay.defaultChecked === true){
+                    totalPriceItem += totalPrice(item.amount, item.discount, item.price);
+                }
+            }
+           
+        })
+        setTotalAllOrder(totalPriceItem)
+    },[listOrder])
     function ListPay({listOrder}) {
         return (
             listOrder.map((item, index) => (
-                <label htmlFor={`pay_checkbox-${index}`} key={index} className="pay_body-table_col">
+               
+                <label htmlFor={`pay_checkbox-${item.id}`} key={index} className="pay_body-table_col"
+                >
                     <div><h3 className="pay_body-table_col-boxvalue">
                         {index}
                     </h3></div>
@@ -38,7 +59,7 @@ function Pay({ showPay, hide, idB , nameTable , notifyPay}) {
                         {item.name}
                     </h3></div>
                     <div><h3 className="pay_body-table_col-boxvalue">
-                        {item.id}
+                        {item.idP}
                     </h3></div>
                     <div><h3 className="pay_body-table_col-boxvalue">
                        {item.amount}
@@ -59,7 +80,8 @@ function Pay({ showPay, hide, idB , nameTable , notifyPay}) {
                         <input
                             type="checkbox" 
                             className="pay_checkbox"
-                            id={`pay_checkbox-${index}`}
+                            defaultChecked = {true}
+                            id={`pay_checkbox-${item.id}`}
                         />
                     </div>
 
@@ -72,13 +94,7 @@ function Pay({ showPay, hide, idB , nameTable , notifyPay}) {
             {
                 showPay &&
                 <>
-                    <input
-                        type="checkbox"
-                        defaultChecked="true"
-                        className="check_overlay"
-                        id='check_overlay'
-                        hidden={true}
-                    />
+                   
                     <div className="overlay" htmlFor='check_overlay'></div>
                     <div className="pay-box">
                         <div className="pay-box_title">
@@ -111,21 +127,24 @@ function Pay({ showPay, hide, idB , nameTable , notifyPay}) {
                                     <div className="pay-box_bottom-box">
                                         <div className="pay-box_bottom-item">
                                             <h2 className="pay-box_bottom-title">Tổng tiền (VNĐ):</h2>
-                                            <span>120000</span>
+                                            <span>{totalAllOrder}</span>
                                         </div>
                                         <div className="pay-box_bottom-item">
                                             <h2 className="pay-box_bottom-title">Chiết khấu (%):</h2>
-                                            <input type="number" defaultValue="0"/>
+                                            <input type="number"
+                                                value={discountPay}
+                                                onChange = {e => setDiscountPay(e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                     <div className="pay-box_bottom-box">
                                         <div className="pay-box_bottom-item">
                                             <h2 className="pay-box_bottom-title">Tổng tiền thanh toán (VNĐ):</h2>
-                                            <span>120000</span>
+                                            <span>{totalWillPay()}</span>
                                         </div>
                                         <div className="pay-box_bottom-item">
                                             <h2 className="pay-box_bottom-title">Tổng tiền chiết khấu (VNĐ):</h2>
-                                            <span>120000</span>
+                                            <span>{totalAllOrder - totalWillPay()}</span>
                                         </div>
                                     </div>
                                 </div>
