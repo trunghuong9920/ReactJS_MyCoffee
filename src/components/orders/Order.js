@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import './style.css'
 import Pay from '../pays/Pay'
+import Switchdesk from '../Switchdesk/Switchdesk'
 import useModal from '../pays/useModal'
 import 'react-toastify/dist/ReactToastify.css';
 import config from '../../_config'
@@ -70,6 +71,7 @@ function Order() {
     const idB = query.get("idB")
 
     let numberClickNext = 0
+    const [showSwitchDesk, setShowSwitchDesk] = useState(false)
     const [countNext, setCountNext] = useState(1)
     const [tabCate, setTabcate] = useState('1')
     const [tabNext, setTabNext] = useState(0)
@@ -79,6 +81,7 @@ function Order() {
     const [reloadApiOrder, setReloadApiOrder] = useState(false)
     const [nameTable, setNameTable] = useState('')
     const [totalAllOrder, setTotalAllOrder] = useState(0)
+    const [search, setSearch] = useState('')
 
     const handleAddOrder = (item) => {
 
@@ -233,7 +236,7 @@ function Order() {
         const newData = data.map(
             it => {
                 if (it.idP === item.id) {
-                   it.amount += 1
+                    it.amount += 1
                 }
                 return it
             }
@@ -291,11 +294,11 @@ function Order() {
             .then(res => res.json())
             .then(datas => {
                 setListOrder(datas)
-               
+
             })
     }, [reloadApiOrder])
 
-    useEffect(()=>{
+    useEffect(() => {
         let totalPriceItem = 0
         setTotalAllOrder(0)
         listOrder.map(item => {
@@ -305,13 +308,24 @@ function Order() {
     }, [listOrder])
 
     useEffect(() => {
-        const api = port + "/products?idc=" + tabCate
-        fetch(api)
-            .then(res => res.json())
-            .then(datas => {
-                setGetProduct(datas)
-            })
-    }, [tabCate])
+        if (search === '') {
+            const api = port + "/products?idc=" + tabCate
+            fetch(api)
+                .then(res => res.json())
+                .then(datas => {
+                    setGetProduct(datas)
+                })
+        }
+        else{
+            const api = port + "/products?name=" + search
+            fetch(api)
+                .then(res => res.json())
+                .then(datas => {
+                    setGetProduct(datas)
+                })
+        }
+
+    }, [tabCate, search])
 
     useEffect(() => {
         const api = port + "/categorys"
@@ -334,6 +348,9 @@ function Order() {
             setTabNext(tabNext - 400)
             setCountNext(countNext + 1)
         }
+    }
+    const handleShowSwitchDesk = () =>{
+        setShowSwitchDesk(!showSwitchDesk)
     }
 
     const { showPay, handleShowPay } = useModal()
@@ -491,6 +508,8 @@ function Order() {
                                         <input className=""
                                             placeholder='Nhập để tìm món'
                                             type="text"
+                                            value={search}
+                                            onChange={e => setSearch(e.target.value)}
                                         />
                                     </div>
                                 </div>
@@ -563,9 +582,11 @@ function Order() {
                                 </button>
                             </li>
                             <li className="order_right-item order_rigth-boxshardow">
-                                <Link to="/" className="order_right-link">
+                                <button className="order_right-link"
+                                    onClick={handleShowSwitchDesk}
+                                >
                                     <h3>Chuyển bàn</h3>
-                                </Link>
+                                </button>
                             </li>
 
                             <li className="order_right-item order_right-item-totalprice">
@@ -605,6 +626,15 @@ function Order() {
                     idB={idB}
                     nameTable={nameTable}
                     notifyPay={notifyPay}
+                />
+            }
+            {
+                showSwitchDesk &&
+                <Switchdesk
+                    showSwitchDesk = {showSwitchDesk}
+                    idB={idB}
+                    hide = {handleShowSwitchDesk}
+                    nameTable={nameTable}
                 />
             }
             <ToastContainer
