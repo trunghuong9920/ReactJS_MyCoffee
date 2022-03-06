@@ -42,7 +42,7 @@ function ListAccount() {
     }
 
     useEffect(() => {
-        for (let i = 0; i <= 5; i++) {
+        for (let i = 0; i <= totalPage; i++) {
             const btnPage = document.getElementById(`paginate_list_link-${i}`)
             if (positionPage === i) {
                 btnPage.classList.add("paginate_list_link-active")
