@@ -7,8 +7,9 @@ import AddAccount from "./AddAccount"
 import EditAccount from './EditAccount'
 import DeleteAccount from "./DeleteAccount"
 import config from "../../../_config"
+import clsx from "clsx"
 
-const listCategorys = ["Id", "Ảnh đại diện", "Tên tài khoản", "Tên nhân viên", "Số điện thoại", "Quyền truy cập", "Thao tác"]
+const listCategorys = ["Id", "Ảnh đại diện", "Tên tài khoản", "Tên nhân viên", "Số điện thoại", "Quyền truy cập","Trạng thái", "Thao tác"]
 function ListAccount() {
     const port = config()
     const [getData, setGetData] = useState([])
@@ -246,6 +247,24 @@ function ListAccount() {
                                     <div className="ListAccout_category_col"
                                     >
                                         <h3 className="ListAccount_body_col_value">{item.permission}</h3>
+                                    </div>
+                                    <div className="ListAccout_category_col"
+                                    >
+                                        <div className="statusForm">
+                                            <input
+                                                type={"checkbox"}
+                                                hidden ={true}
+                                                id = {`statusForm-${item.id}`}
+                                            />
+                                            <label
+                                                className={clsx('statusForm-unlock','statusForm_activeUnlock')}
+                                                htmlFor={`statusForm-${item.id}`}
+                                            ><i className="ti-unlock"></i></label>
+                                            <label
+                                                className={clsx('statusForm-lock' )}
+                                                htmlFor={`statusForm-${item.id}`}
+                                            ><i className="ti-lock"></i></label>
+                                        </div>
                                     </div>
                                     <div className="ListAccout_category_col"
                                     >

@@ -182,11 +182,33 @@
       "img": "https://i.pinimg.com/564x/18/f8/22/18f822a007df869258b80a7c82471fa0.jpg",
       "name": "Cà phê phin",
       "idP": 7,
-      "amount": 1,
+      "amount": 2,
       "price": "20000",
       "discount": 0,
       "timeIn": "23:9 6-3-2022",
       "id": 16
+    },
+    {
+      "idB": "2",
+      "img": "https://neomartpro.com/wp-content/uploads/2020/05/cafedenda-1.jpg",
+      "name": "Đen đá",
+      "idP": 2,
+      "amount": 1,
+      "price": 10000,
+      "discount": 0,
+      "timeIn": "12:55 7-3-2022",
+      "id": 17
+    },
+    {
+      "idB": "2",
+      "img": "",
+      "name": "Việt quất",
+      "idP": 11,
+      "amount": 1,
+      "price": "55000",
+      "discount": 0,
+      "timeIn": "13:37 7-3-2022",
+      "id": 18
     }
   ],
   "login": [

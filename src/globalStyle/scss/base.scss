@@ -178,3 +178,48 @@ $text-color-3: #fff;
     margin: 0;
     font-size: 1.4rem;
 }
+
+
+//status form
+.statusForm{
+    display: block;
+    width: 30px;
+    height: 50px;
+    border: 1px solid $color-2;
+    background-color: $color-17;
+    margin: auto;
+    margin-top: 4px;
+    &-lock{
+        display: block;
+        width: 100%;
+        height: 50%;
+        position: relative;
+        cursor: pointer;
+        i{  
+            position: absolute;
+            font-size: 1.4rem;
+            top: 40%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 500;
+        }
+    }
+    &-unlock{
+        display: block;
+        width: 100%;
+        height: 50%;
+        position: relative;
+        cursor: pointer;
+        i{
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+    }
+    &_activeUnlock{
+        background-color: #cf7b1c;
+    }
+}
